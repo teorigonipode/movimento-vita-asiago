@@ -1,0 +1,116 @@
+import { useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { Menu, X, Heart, Phone } from 'lucide-react';
+
+const navLinks = [
+  { to: '/', label: 'Home' },
+  { to: '/chi-siamo', label: 'Chi siamo' },
+  { to: '/come-possiamo-aiutarti', label: 'Come possiamo aiutarti' },
+  { to: '/testimonianze', label: 'Testimonianze' },
+  { to: '/volontari', label: 'Volontari' },
+  { to: '/donazioni', label: 'Donazioni' },
+  { to: '/contatti', label: 'Contatti' },
+  { to: '/faq', label: 'FAQ' },
+];
+
+export default function Navbar() {
+  const [open, setOpen] = useState(false);
+  const location = useLocation();
+
+  return (
+    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-mv-warm shadow-sm">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16 lg:h-20">
+          <Link to="/" className="flex items-center gap-2 shrink-0">
+            <Heart className="w-7 h-7 text-mv-teal fill-mv-teal" />
+            <div className="leading-tight">
+              <span className="block text-sm font-semibold text-mv-blue tracking-wide">
+                Movimento per la Vita
+              </span>
+              <span className="block text-xs text-mv-teal font-medium">
+                Asiago
+              </span>
+            </div>
+          </Link>
+
+          <nav className="hidden lg:flex items-center gap-1">
+            {navLinks.map((link) => (
+              <Link
+                key={link.to}
+                to={link.to}
+                className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                  location.pathname === link.to
+                    ? 'text-mv-blue bg-mv-warm'
+                    : 'text-gray-600 hover:text-mv-blue hover:bg-mv-warm'
+                }`}
+              >
+                {link.label}
+              </Link>
+            ))}
+          </nav>
+
+          <div className="hidden lg:flex items-center gap-3">
+            <a
+              href="tel:+39000000000"
+              className="flex items-center gap-1.5 text-sm font-medium text-mv-teal hover:text-mv-teal-light transition-colors"
+            >
+              <Phone className="w-4 h-4" />
+              <span>Chiedi aiuto</span>
+            </a>
+            <Link
+              to="/volontari"
+              className="px-4 py-2 bg-mv-blue text-white text-sm font-medium rounded-lg hover:bg-mv-blue-light transition-colors"
+            >
+              Diventa volontario
+            </Link>
+          </div>
+
+          <button
+            onClick={() => setOpen(!open)}
+            className="lg:hidden p-2 rounded-md text-gray-600 hover:bg-mv-warm"
+            aria-label="Menu"
+          >
+            {open ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
+        </div>
+      </div>
+
+      {open && (
+        <div className="lg:hidden border-t border-mv-warm bg-white">
+          <div className="px-4 py-3 space-y-1">
+            {navLinks.map((link) => (
+              <Link
+                key={link.to}
+                to={link.to}
+                onClick={() => setOpen(false)}
+                className={`block px-3 py-2 rounded-md text-sm font-medium ${
+                  location.pathname === link.to
+                    ? 'text-mv-blue bg-mv-warm'
+                    : 'text-gray-600 hover:text-mv-blue hover:bg-mv-warm'
+                }`}
+              >
+                {link.label}
+              </Link>
+            ))}
+            <div className="pt-3 border-t border-mv-warm space-y-2">
+              <a
+                href="tel:+39000000000"
+                className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-mv-teal"
+              >
+                <Phone className="w-4 h-4" />
+                Chiedi aiuto
+              </a>
+              <Link
+                to="/volontari"
+                onClick={() => setOpen(false)}
+                className="block px-3 py-2 bg-mv-blue text-white text-sm font-medium rounded-lg text-center"
+              >
+                Diventa volontario
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
+    </header>
+  );
+}
