@@ -58,18 +58,16 @@ Il sito sarà disponibile su `http://localhost:5173`.
 
 ### Setup database
 
-Le migration vengono gestite tramite Supabase MCP. Le tabelle principali sono:
+Applica la migration unificata `src/migrations/20260624000003_unified_schema.sql` dalla dashboard SQL di Supabase. Questa migration crea:
 
 - `contact_messages` — messaggi dal form contatti
 - `volunteer_requests` — richieste dal form volontari
 
 Entrambe le tabelle hanno RLS abilitato con le seguenti policy:
-- **INSERT:** permesso pubblicamente (anon)
-- **SELECT/UPDATE/DELETE:** bloccato per utenti anonimi, accessibile solo agli utenti autenticati dell'area amministrativa
+- **INSERT:** permesso pubblicamente (anon) per consentire l'invio dei form
+- **SELECT/UPDATE/DELETE:** bloccato per utenti anonimi
 
-### Applicare le migration
-
-Le migration si trovano in `supabase/migrations/`. Per applicarle, utilizzare gli strumenti MCP di Supabase o la dashboard SQL di Supabase.
+Le policy INSERT usano `WITH CHECK (true)` perche' i form del sito pubblico non richiedono autenticazione. I dati sono protetti perche' non esistono policy SELECT/UPDATE/DELETE per anon.
 
 ## Configurazione Vercel
 
@@ -81,6 +79,13 @@ Le migration si trovano in `supabase/migrations/`. Per applicarle, utilizzare gl
 
 3. Il deploy avverrà automaticamente ad ogni push su `main`.
 
+### Comportamento in caso di variabili mancanti
+
+Se le variabili ambiente non sono configurate:
+- Il sito **non va in crash** e **non mostra schermata bianca**
+- Viene mostrato un messaggio di errore gestito in italiano
+- I form mostrano un avviso con suggerimento di contatto telefonico/email
+
 ## Variabili ambiente
 
 ```env
@@ -88,7 +93,7 @@ VITE_SUPABASE_URL=https://tuo-progetto.supabase.co
 VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIs...
 ```
 
-**Importante:** il file `.env` è nel `.gitignore` e non deve mai essere committato.
+**Importante:** il file `.env` è nel `.gitignore` e non deve mai essere committato. Nessun URL o chiave Supabase è hardcoded nel codice sorgente.
 
 ## Procedura deploy
 
@@ -109,7 +114,7 @@ npm run build
 
 ## Creazione del primo account amministratore
 
-L'area amministrativa non è ancora implementata. Per accedere ai dati:
+L'area amministrativa non è ancora implementata (Sprint 2). Per accedere ai dati:
 
 1. Vai alla dashboard di Supabase.
 2. Accedi alla sezione **Table Editor**.
@@ -124,8 +129,9 @@ src/
   components/       Componenti riutilizzabili
   lib/              Client e utility (Supabase)
   pages/            Pagine del sito
+  migrations/       Migration SQL (schema finale)
 supabase/
-  migrations/       Migration SQL
+  migrations/       Cronologia migration
 public/             Asset statici
 ```
 
