@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { ChevronDown, HelpCircle } from 'lucide-react';
 import SectionTitle from '../components/SectionTitle';
+import SEO from '../components/SEO';
 
 const faqs = [
   {
@@ -50,6 +51,10 @@ export default function FAQ() {
 
   return (
     <div>
+      <SEO
+        title="Domande frequenti"
+        description="Trova le risposte alle domande più comuni sui nostri servizi, il volontariato e le donazioni."
+      />
       <section className="bg-mv-blue py-16 md:py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">Domande frequenti</h1>

@@ -1,5 +1,6 @@
 import { Phone, Package, MapPin, Baby, HeartHandshake, Clock, ShieldCheck } from 'lucide-react';
 import SectionTitle from '../components/SectionTitle';
+import SEO from '../components/SEO';
 
 const services = [
   {
@@ -49,6 +50,10 @@ const services = [
 export default function ComePossiamoAiutarti() {
   return (
     <div>
+      <SEO
+        title="Come possiamo aiutarti"
+        description="I nostri servizi sono gratuiti, riservati e accessibili a tutti. Ascolto, supporto materiale e orientamento ai servizi."
+      />
       <section className="bg-mv-blue py-16 md:py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">Come possiamo aiutarti</h1>

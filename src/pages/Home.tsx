@@ -1,10 +1,15 @@
 import { Link } from 'react-router-dom';
 import { Heart, Phone, Users, Shield, MessageCircle, HandHeart, ArrowRight } from 'lucide-react';
 import SectionTitle from '../components/SectionTitle';
+import SEO from '../components/SEO';
 
 export default function Home() {
   return (
     <div>
+      <SEO
+        title="Movimento per la Vita Asiago"
+        description="Ascolto, accoglienza e aiuto concreto per chi è in difficoltà. Sede locale del Movimento per la Vita Italiano."
+      />
       {/* Hero */}
       <section className="relative bg-mv-blue overflow-hidden">
         <div className="absolute inset-0 opacity-10">

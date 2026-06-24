@@ -1,6 +1,12 @@
+import SEO from '../components/SEO';
+
 export default function PrivacyPolicy() {
   return (
     <div>
+      <SEO
+        title="Privacy Policy"
+        description="Informativa sul trattamento dei dati personali ai sensi del Regolamento UE 2016/679 (GDPR)."
+      />
       <section className="bg-mv-blue py-16 md:py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">Privacy Policy</h1>

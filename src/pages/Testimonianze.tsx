@@ -1,5 +1,6 @@
 import { Quote } from 'lucide-react';
 import SectionTitle from '../components/SectionTitle';
+import SEO from '../components/SEO';
 
 const stories = [
   {
@@ -43,6 +44,10 @@ const stories = [
 export default function Testimonianze() {
   return (
     <div>
+      <SEO
+        title="Testimonianze"
+        description="Storie vere di persone che hanno trovato ascolto, aiuto e speranza grazie al nostro impegno."
+      />
       <section className="bg-mv-blue py-16 md:py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">Testimonianze</h1>

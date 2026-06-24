@@ -1,5 +1,6 @@
 import { Heart, Target, Users, Calendar, Award } from 'lucide-react';
 import SectionTitle from '../components/SectionTitle';
+import SEO from '../components/SEO';
 
 const milestones = [
   { year: '2024', title: 'Fondazione', desc: 'Nasce la sede locale di Asiago, collegata al Movimento per la Vita Italiano.' },
@@ -10,6 +11,10 @@ const milestones = [
 export default function ChiSiamo() {
   return (
     <div>
+      <SEO
+        title="Chi siamo"
+        description="La sede di Asiago del Movimento per la Vita Italiano: un gruppo di volontari uniti dalla volontà di aiutare chi è in difficoltà."
+      />
       <section className="bg-mv-blue py-16 md:py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">Chi siamo</h1>
