@@ -4,12 +4,13 @@ Sito web della sede locale di Asiago del Movimento per la Vita Italiano.
 
 ## Panoramica
 
-Questo progetto è un sito web informativo e di contatto per il Movimento per la Vita Asiago, un'associazione di volontariato che offre ascolto, accoglienza e aiuto concreto a chi si trova in difficoltà.
+Sito web informativo e di contatto per il Movimento per la Vita Asiago, un'associazione di volontariato che offre ascolto, accoglienza e aiuto concreto a chi si trova in difficoltà.
 
 ## Tecnologie
 
 - **Frontend:** React 18 + TypeScript + Vite + Tailwind CSS
-- **Backend:** Supabase (database PostgreSQL + RLS)
+- **Backend:** Supabase (database PostgreSQL + RLS + Auth)
+- **Analytics:** Vercel Analytics
 - **Deploy:** Vercel
 - **Routing:** React Router DOM
 
@@ -45,7 +46,7 @@ cp .env.example .env
 npm run dev
 ```
 
-Il sito sarà disponibile su `http://localhost:5173`.
+Il sito sara' disponibile su `http://localhost:5173`.
 
 ## Configurazione Supabase
 
@@ -58,16 +59,29 @@ Il sito sarà disponibile su `http://localhost:5173`.
 
 ### Setup database
 
-Applica la migration unificata `src/migrations/20260624000003_unified_schema.sql` dalla dashboard SQL di Supabase. Questa migration crea:
+Applica la migration dalla dashboard SQL di Supabase:
 
-- `contact_messages` — messaggi dal form contatti
-- `volunteer_requests` — richieste dal form volontari
+```sql
+-- Esegui in ordine:
+-- 1. supabase/migrations/20260623150903_create_contact_and_volunteer_tables.sql
+-- 2. supabase/migrations/20260624074305_20260624000001_update_tables_and_rls.sql
+-- 3. supabase/migrations/20260624080613_20260624000002_remove_message_from_volunteers.sql
+-- 4. supabase/migrations/20260624080718_20260624000003_unified_schema.sql
+-- 5. supabase/migrations/20260624082733_20260624000004_admin_rls_policies.sql
+```
 
-Entrambe le tabelle hanno RLS abilitato con le seguenti policy:
-- **INSERT:** permesso pubblicamente (anon) per consentire l'invio dei form
-- **SELECT/UPDATE/DELETE:** bloccato per utenti anonimi
+Oppure esegui la migration unificata:
+```sql
+-- src/migrations/20260624000003_unified_schema.sql
+```
 
-Le policy INSERT usano `WITH CHECK (true)` perche' i form del sito pubblico non richiedono autenticazione. I dati sono protetti perche' non esistono policy SELECT/UPDATE/DELETE per anon.
+### Creazione primo account admin
+
+1. Vai alla dashboard di Supabase > Authentication > Users
+2. Clicca "Add user" > "Create new user"
+3. Inserisci email e password
+4. Disabilita "Confirm email" (email confirmation OFF)
+5. L'utente puo' ora accedere a `/admin`
 
 ## Configurazione Vercel
 
@@ -77,7 +91,7 @@ Le policy INSERT usano `WITH CHECK (true)` perche' i form del sito pubblico non 
    - Vai su **Project Settings > Environment Variables**
    - Aggiungi `VITE_SUPABASE_URL` e `VITE_SUPABASE_ANON_KEY`
 
-3. Il deploy avverrà automaticamente ad ogni push su `main`.
+3. Il deploy avverra' automaticamente ad ogni push su `main`.
 
 ### Comportamento in caso di variabili mancanti
 
@@ -93,51 +107,46 @@ VITE_SUPABASE_URL=https://tuo-progetto.supabase.co
 VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIs...
 ```
 
-**Importante:** il file `.env` è nel `.gitignore` e non deve mai essere committato. Nessun URL o chiave Supabase è hardcoded nel codice sorgente.
-
-## Procedura deploy
-
-1. Verifica che il build locale funzioni:
-```bash
-npm run build
-```
-
-2. Pusha su `main` — Vercel eseguirà il deploy automaticamente.
-
-3. Verifica il deploy nella preview di Vercel prima di promuovere in produzione.
-
-## Collegamento dominio personalizzato
-
-1. Vai su **Project Settings > Domains** su Vercel.
-2. Aggiungi il tuo dominio (es. `movimentovitaasiago.it`).
-3. Segui le istruzioni per configurare i record DNS.
-
-## Creazione del primo account amministratore
-
-L'area amministrativa non è ancora implementata (Sprint 2). Per accedere ai dati:
-
-1. Vai alla dashboard di Supabase.
-2. Accedi alla sezione **Table Editor**.
-3. Visualizza le tabelle `contact_messages` e `volunteer_requests`.
-
-Per futuri sviluppi, l'area admin utilizzerà l'autenticazione di Supabase con email/password.
+**Importante:** il file `.env` e' nel `.gitignore` e non deve mai essere committato. Nessun URL o chiave Supabase e' hardcoded nel codice sorgente.
 
 ## Struttura del progetto
 
 ```
 src/
   components/       Componenti riutilizzabili
+  contexts/         Context React (Auth)
   lib/              Client e utility (Supabase)
   pages/            Pagine del sito
+    admin/          Area amministrativa
   migrations/       Migration SQL (schema finale)
 supabase/
   migrations/       Cronologia migration
 public/             Asset statici
 ```
 
+## Route del sito
+
+| Route | Descrizione |
+|-------|-------------|
+| `/` | Home |
+| `/chi-siamo` | Chi siamo |
+| `/come-possiamo-aiutarti` | Servizi offerti |
+| `/testimonianze` | Testimonianze |
+| `/volontari` | Diventa volontario (form) |
+| `/donazioni` | Donazioni |
+| `/contatti` | Contatti (form) |
+| `/faq` | FAQ |
+| `/privacy-policy` | Privacy Policy |
+| `/cookie-policy` | Cookie Policy |
+| `/admin` | Login area admin |
+| `/admin/dashboard` | Dashboard richieste |
+| `/admin/requests/:id` | Dettaglio richiesta |
+| `/admin/volunteers` | Elenco candidature volontari |
+| `/admin/volunteers/:id` | Dettaglio candidatura |
+
 ## Form e raccolta dati
 
-I form di contatto e volontariato salvano i dati direttamente su Supabase:
+I form salvano i dati direttamente su Supabase:
 
 - **Form Contatti:** `/contatti` → tabella `contact_messages`
 - **Form Volontari:** `/volontari` → tabella `volunteer_requests`
@@ -149,12 +158,73 @@ Entrambi i form includono:
 - Prevenzione doppi invii
 - Stato di caricamento
 
-## Sicurezza
+## Struttura database
 
-- RLS abilitato su tutte le tabelle
-- Nessun dato sensibile hardcoded nel codice
-- Variabili ambiente gestite esclusivamente tramite `.env`
-- In caso di mancata configurazione Supabase, il sito mostra un errore gestito senza crash
+### contact_messages
+
+| Colonna | Tipo | Nullable | Default |
+|---------|------|----------|---------|
+| id | uuid | NO | gen_random_uuid() |
+| created_at | timestamptz | YES | now() |
+| name | text | NO | — |
+| email | text | NO | — |
+| phone | text | YES | — |
+| subject | text | NO | — |
+| message | text | NO | — |
+| status | text | NO | 'Nuovo' |
+| notes | text | YES | — |
+
+### volunteer_requests
+
+| Colonna | Tipo | Nullable | Default |
+|---------|------|----------|---------|
+| id | uuid | NO | gen_random_uuid() |
+| created_at | timestamptz | YES | now() |
+| name | text | NO | — |
+| email | text | NO | — |
+| phone | text | YES | — |
+| availability | text | YES | — |
+| motivation | text | YES | — |
+| status | text | NO | 'Nuovo' |
+| notes | text | YES | — |
+
+## Policy RLS
+
+| Tabella | Policy | Ruolo | Comando | Scopo |
+|---------|--------|-------|---------|-------|
+| contact_messages | public_insert_contact_messages | anon | INSERT | Form pubblico |
+| contact_messages | auth_select_contact_messages | authenticated | SELECT | Area admin |
+| contact_messages | auth_update_contact_messages | authenticated | UPDATE | Area admin |
+| volunteer_requests | public_insert_volunteer_requests | anon | INSERT | Form pubblico |
+| volunteer_requests | auth_select_volunteer_requests | authenticated | SELECT | Area admin |
+| volunteer_requests | auth_update_volunteer_requests | authenticated | UPDATE | Area admin |
+
+**Sicurezza:**
+- anon: solo INSERT (form pubblici)
+- authenticated: SELECT + UPDATE (area admin)
+- DELETE: **nessuna policy** per nessun ruolo (protezione dati)
+
+Le policy INSERT con `WITH CHECK (true)` sono necessarie perche' i form del sito pubblico non richiedono autenticazione. I dati sono protetti perche' non esistono policy SELECT/UPDATE/DELETE per anon.
+
+## Area admin
+
+L'area admin e' accessibile tramite `/admin` e richiede login con Supabase Auth.
+
+Funzionalita':
+- Login con email/password
+- Logout
+- Dashboard richieste contatti (ricerca, filtri, ordinamento)
+- Dettaglio richiesta (modifica stato, note interne)
+- Elenco candidature volontari (ricerca, filtri, ordinamento)
+- Dettaglio candidatura (modifica stato, note interne)
+
+## Deploy
+
+```bash
+npm run build
+```
+
+Pusha su `main` — Vercel eseguira' il deploy automaticamente.
 
 ## Licenza
 
