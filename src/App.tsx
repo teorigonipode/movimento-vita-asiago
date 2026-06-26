@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
 import Layout from './components/Layout';
+import ProtectedRoute from './components/ProtectedRoute';
 import Home from './pages/Home';
 import ChiSiamo from './pages/ChiSiamo';
 import ComePossiamoAiutarti from './pages/ComePossiamoAiutarti';
@@ -35,10 +36,38 @@ function App() {
             <Route path="/cookie-policy" element={<CookiePolicy />} />
           </Route>
           <Route path="/admin" element={<AdminLogin />} />
-          <Route path="/admin/dashboard" element={<AdminDashboard />} />
-          <Route path="/admin/requests/:id" element={<AdminRequestDetail />} />
-          <Route path="/admin/volunteers" element={<AdminVolunteers />} />
-          <Route path="/admin/volunteers/:id" element={<AdminVolunteerDetail />} />
+          <Route
+            path="/admin/dashboard"
+            element={
+              <ProtectedRoute>
+                <AdminDashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/requests/:id"
+            element={
+              <ProtectedRoute>
+                <AdminRequestDetail />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/volunteers"
+            element={
+              <ProtectedRoute>
+                <AdminVolunteers />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/volunteers/:id"
+            element={
+              <ProtectedRoute>
+                <AdminVolunteerDetail />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

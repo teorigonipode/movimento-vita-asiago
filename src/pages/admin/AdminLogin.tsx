@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Lock, Mail, Eye, EyeOff, AlertCircle } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import SEO from '../../components/SEO';
@@ -10,8 +10,17 @@ export default function AdminLogin() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const { signIn } = useAuth();
+  const { user, loading: authLoading, signIn } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const from = (location.state as { from?: { pathname: string } })?.from?.pathname || '/admin/dashboard';
+
+  useEffect(() => {
+    if (!authLoading && user) {
+      navigate(from, { replace: true });
+    }
+  }, [user, authLoading, navigate, from]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -26,8 +35,16 @@ export default function AdminLogin() {
       return;
     }
 
-    navigate('/admin/dashboard');
+    navigate(from, { replace: true });
   };
+
+  if (authLoading) {
+    return (
+      <div className="min-h-screen bg-mv-cream flex items-center justify-center">
+        <p className="text-gray-500 text-lg">Caricamento sessione...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-mv-cream flex items-center justify-center px-4">

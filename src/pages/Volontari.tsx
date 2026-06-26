@@ -62,15 +62,13 @@ export default function Volontari() {
 
     setLoading(true);
     try {
-      const { error } = await supabase.from('volunteer_requests').insert([
-        {
-          name: form.name.trim(),
-          email: form.email.trim(),
-          phone: form.phone.trim() || null,
-          availability: form.availability.trim() || null,
-          motivation: form.motivation.trim(),
-        },
-      ]);
+      const { error } = await supabase!.from('volunteer_requests').insert({
+        name: form.name.trim(),
+        email: form.email.trim(),
+        phone: form.phone.trim() || null,
+        availability: form.availability.trim() || null,
+        motivation: form.motivation.trim(),
+      });
 
       if (error) {
         console.error('Supabase insert error:', error);

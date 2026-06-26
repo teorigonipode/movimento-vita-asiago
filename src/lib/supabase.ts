@@ -1,9 +1,33 @@
-import { createClient } from '@supabase/supabase-js';
+import { createClient, SupabaseClient } from '@supabase/supabase-js';
+
+interface ContactMessage {
+  id: string;
+  created_at: string;
+  name: string;
+  email: string;
+  phone: string | null;
+  subject: string;
+  message: string;
+  status: string;
+  notes: string | null;
+}
+
+interface VolunteerRequest {
+  id: string;
+  created_at: string;
+  name: string;
+  email: string;
+  phone: string | null;
+  availability: string | null;
+  motivation: string | null;
+  status: string;
+  notes: string | null;
+}
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
-let client: ReturnType<typeof createClient> | null = null;
+let client: SupabaseClient | null = null;
 let configError: string | null = null;
 
 if (!supabaseUrl || !supabaseKey) {
@@ -12,7 +36,7 @@ if (!supabaseUrl || !supabaseKey) {
 } else {
   try {
     client = createClient(supabaseUrl, supabaseKey, {
-      auth: { persistSession: false },
+      auth: { persistSession: true },
     });
   } catch (err) {
     configError = 'Errore durante l\'inizializzazione di Supabase.';
@@ -22,3 +46,4 @@ if (!supabaseUrl || !supabaseKey) {
 
 export const supabase = client;
 export const getSupabaseError = () => configError;
+export type { ContactMessage, VolunteerRequest };

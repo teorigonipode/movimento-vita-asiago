@@ -1,20 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Save, Phone, Mail, Calendar, MessageSquare, AlertCircle, CheckCircle } from 'lucide-react';
-import { useAuth } from '../../contexts/AuthContext';
-import { supabase } from '../../lib/supabase';
-
-interface ContactMessage {
-  id: string;
-  created_at: string;
-  name: string;
-  email: string;
-  phone: string | null;
-  subject: string;
-  message: string;
-  status: string;
-  notes: string | null;
-}
+import { supabase, type ContactMessage } from '../../lib/supabase';
 
 const statuses = ['Nuovo', 'In lavorazione', 'Contattata', 'Chiuso'];
 
@@ -28,7 +15,6 @@ const statusColors: Record<string, string> = {
 export default function AdminRequestDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { user } = useAuth();
   const [request, setRequest] = useState<ContactMessage | null>(null);
   const [status, setStatus] = useState('');
   const [notes, setNotes] = useState('');
@@ -38,17 +24,13 @@ export default function AdminRequestDetail() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    if (!user) {
-      navigate('/admin');
-      return;
-    }
     fetchRequest();
-  }, [id, user, navigate]);
+  }, [id]);
 
   const fetchRequest = async () => {
     if (!supabase || !id) return;
     setLoading(true);
-    const { data, error } = await supabase
+    const { data, error } = await supabase!
       .from('contact_messages')
       .select('*')
       .eq('id', id)
@@ -72,7 +54,7 @@ export default function AdminRequestDetail() {
     setSaved(false);
     setError('');
 
-    const { error: updateError } = await supabase
+    const { error: updateError } = await supabase!
       .from('contact_messages')
       .update({ status, notes: notes.trim() || null })
       .eq('id', id);

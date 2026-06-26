@@ -1,20 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Save, Phone, Mail, Calendar, Users, AlertCircle, CheckCircle } from 'lucide-react';
-import { useAuth } from '../../contexts/AuthContext';
-import { supabase } from '../../lib/supabase';
-
-interface VolunteerRequest {
-  id: string;
-  created_at: string;
-  name: string;
-  email: string;
-  phone: string | null;
-  availability: string | null;
-  motivation: string | null;
-  status: string;
-  notes: string | null;
-}
+import { supabase, type VolunteerRequest } from '../../lib/supabase';
 
 const statuses = ['Nuovo', 'In lavorazione', 'Contattata', 'Chiuso'];
 
@@ -28,7 +15,6 @@ const statusColors: Record<string, string> = {
 export default function AdminVolunteerDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { user } = useAuth();
   const [volunteer, setVolunteer] = useState<VolunteerRequest | null>(null);
   const [status, setStatus] = useState('');
   const [notes, setNotes] = useState('');
@@ -38,17 +24,13 @@ export default function AdminVolunteerDetail() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    if (!user) {
-      navigate('/admin');
-      return;
-    }
     fetchVolunteer();
-  }, [id, user, navigate]);
+  }, [id]);
 
   const fetchVolunteer = async () => {
     if (!supabase || !id) return;
     setLoading(true);
-    const { data, error } = await supabase
+    const { data, error } = await supabase!
       .from('volunteer_requests')
       .select('*')
       .eq('id', id)
@@ -72,7 +54,7 @@ export default function AdminVolunteerDetail() {
     setSaved(false);
     setError('');
 
-    const { error: updateError } = await supabase
+    const { error: updateError } = await supabase!
       .from('volunteer_requests')
       .update({ status, notes: notes.trim() || null })
       .eq('id', id);

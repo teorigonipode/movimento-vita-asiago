@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Phone, Mail, MapPin, Clock, Send, CheckCircle, AlertCircle, Shield } from 'lucide-react';
+import { Phone, Mail, MapPin, Clock, Send, CheckCircle, AlertCircle } from 'lucide-react';
 import SectionTitle from '../components/SectionTitle';
 import SEO from '../components/SEO';
 import SupabaseError from '../components/SupabaseError';
@@ -64,15 +64,13 @@ export default function Contatti() {
 
     setLoading(true);
     try {
-      const { error } = await supabase.from('contact_messages').insert([
-        {
-          name: form.name.trim(),
-          email: form.email.trim(),
-          phone: form.phone.trim() || null,
-          subject: form.subject.trim(),
-          message: form.message.trim(),
-        },
-      ]);
+      const { error } = await supabase!.from('contact_messages').insert({
+        name: form.name.trim(),
+        email: form.email.trim(),
+        phone: form.phone.trim() || null,
+        subject: form.subject.trim(),
+        message: form.message.trim(),
+      });
 
       if (error) {
         console.error('Supabase insert error:', error);

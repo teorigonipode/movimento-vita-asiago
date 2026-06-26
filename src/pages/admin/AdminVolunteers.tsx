@@ -2,19 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search, Filter, Users, LogOut, ChevronRight, Calendar, Phone, Mail, ArrowLeft } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
-import { supabase } from '../../lib/supabase';
-
-interface VolunteerRequest {
-  id: string;
-  created_at: string;
-  name: string;
-  email: string;
-  phone: string | null;
-  availability: string | null;
-  motivation: string | null;
-  status: string;
-  notes: string | null;
-}
+import { supabase, type VolunteerRequest } from '../../lib/supabase';
 
 type StatusFilter = 'Tutti' | 'Nuovo' | 'In lavorazione' | 'Contattata' | 'Chiuso';
 
@@ -35,17 +23,13 @@ export default function AdminVolunteers() {
   const [sortBy, setSortBy] = useState<'newest' | 'oldest'>('newest');
 
   useEffect(() => {
-    if (!user) {
-      navigate('/admin');
-      return;
-    }
     fetchVolunteers();
-  }, [user, navigate]);
+  }, []);
 
   const fetchVolunteers = async () => {
     if (!supabase) return;
     setLoading(true);
-    const { data, error } = await supabase
+    const { data, error } = await supabase!
       .from('volunteer_requests')
       .select('*')
       .order('created_at', { ascending: false });
