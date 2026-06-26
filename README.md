@@ -10,6 +10,7 @@ Sito web informativo e di contatto per il Movimento per la Vita Asiago, un'assoc
 
 - **Frontend:** React 18 + TypeScript + Vite + Tailwind CSS
 - **Backend:** Supabase (PostgreSQL + RLS + Auth)
+- **Analytics:** Vercel Analytics
 - **Deploy:** Vercel
 - **Routing:** React Router DOM v7
 
@@ -53,17 +54,56 @@ Il sito sara disponibile su `http://localhost:5173`.
 
 ## Configurazione Supabase
 
+### Variabili ambiente
+
+| Variabile | Descrizione |
+|-----------|-------------|
+| `VITE_SUPABASE_URL` | URL del progetto Supabase |
+| `VITE_SUPABASE_ANON_KEY` | Chiave anonima (pubblica) di Supabase |
+
 ### Setup database
 
 Applica le migration in ordine dalla dashboard SQL di Supabase:
 
 ```sql
+-- Eseguire in sequenza dalla dashboard Supabase > SQL Editor:
+
 -- 1. supabase/migrations/20260623150903_create_contact_and_volunteer_tables.sql
 -- 2. supabase/migrations/20260624074305_20260624000001_update_tables_and_rls.sql
 -- 3. supabase/migrations/20260624080613_20260624000002_remove_message_from_volunteers.sql
 -- 4. supabase/migrations/20260624080718_20260624000003_unified_schema.sql
 -- 5. supabase/migrations/20260624082733_20260624000004_admin_rls_policies.sql
 ```
+
+**Nota:** I file sono in `supabase/migrations/`. Non usare i file in `src/migrations/` (obsoleto).
+
+### Schema database finale
+
+Dopo aver applicato tutte le migration, il database avra:
+
+**Tabella `contact_messages`**
+- `id` (uuid, PK)
+- `created_at` (timestamptz)
+- `name` (text, NOT NULL)
+- `email` (text, NOT NULL)
+- `phone` (text, nullable)
+- `subject` (text, NOT NULL)
+- `message` (text, NOT NULL)
+- `status` (text, NOT NULL, default 'Nuovo')
+- `notes` (text, nullable)
+
+**Tabella `volunteer_requests`**
+- `id` (uuid, PK)
+- `created_at` (timestamptz)
+- `name` (text, NOT NULL)
+- `email` (text, NOT NULL)
+- `phone` (text, nullable)
+- `availability` (text, nullable)
+- `motivation` (text, nullable)
+- `status` (text, NOT NULL, default 'Nuovo')
+- `notes` (text, nullable)
+
+**Nota:** La tabella `volunteer_requests` NON ha il campo `message` (rimosso).
 
 ### Creazione primo account admin
 
@@ -82,29 +122,6 @@ Applica le migration in ordine dalla dashboard SQL di Supabase:
 3. Il deploy avverra automaticamente ad ogni push su `main`
 
 Il file `vercel.json` configurato con SPA rewrites garantisce il corretto routing di tutte le pagine.
-
-## Variabili ambiente
-
-| Variabile | Descrizione |
-|-----------|-------------|
-| `VITE_SUPABASE_URL` | URL del progetto Supabase |
-| `VITE_SUPABASE_ANON_KEY` | Chiave anonima (pubblica) di Supabase |
-
-**Nota:** Il file `.env` e nel `.gitignore` e non deve mai essere committato.
-
-## Struttura del progetto
-
-```
-src/
-  components/       Componenti riutilizzabili
-  contexts/         Context React (Auth)
-  lib/              Client e utility (Supabase)
-  pages/            Pagine del sito
-    admin/          Area amministrativa
-supabase/
-  migrations/       Migration SQL
-public/             Asset statici
-```
 
 ## Route
 
@@ -137,51 +154,28 @@ public/             Asset statici
 
 L'area admin richiede autenticazione con Supabase Auth.
 
+### Autenticazione
+
+- **Login:** Email/password tramite Supabase Auth
+- **Sessione:** Persistente (localStorage), sopravvive al refresh
+- **Logout:** Disconnessione con cancellazione sessione
+- **Recupero password:** Tramite dashboard Supabase (Authentication > Users > Send password reset)
+
+### Comportamento routing
+
+- Utente non autenticato su `/admin` → mostra login
+- Utente autenticato su `/admin` → redirect a `/admin/dashboard`
+- Utente autenticato su route admin → accesso consentito
+- Refresh su route admin → sessione mantenuta, nessun redirect
+- Logout → redirect al login
+
 ### Funzionalita
 
-- Login/logout
 - Dashboard richieste contatti (ricerca, filtri, ordinamento)
 - Dettaglio richiesta (modifica stato, note interne)
 - Dashboard candidature volontari (ricerca, filtri, ordinamento)
 - Dettaglio candidatura (modifica stato, note interne)
-
-### Routing protetto
-
-Le route admin sono protette dal componente `ProtectedRoute`:
-- Verifica lo stato di autenticazione prima del rendering
-- Mostra loading durante il caricamento della sessione
-- Reindirizza al login se non autenticato
-- Mantiene la sessione persistente (localStorage)
-
-## Schema database
-
-### contact_messages
-
-| Colonna | Tipo | Nullable | Default |
-|---------|------|----------|---------|
-| id | uuid | NO | gen_random_uuid() |
-| created_at | timestamptz | YES | now() |
-| name | text | NO | — |
-| email | text | NO | — |
-| phone | text | YES | — |
-| subject | text | NO | — |
-| message | text | NO | — |
-| status | text | NO | 'Nuovo' |
-| notes | text | YES | — |
-
-### volunteer_requests
-
-| Colonna | Tipo | Nullable | Default |
-|---------|------|----------|---------|
-| id | uuid | NO | gen_random_uuid() |
-| created_at | timestamptz | YES | now() |
-| name | text | NO | — |
-| email | text | NO | — |
-| phone | text | YES | — |
-| availability | text | YES | — |
-| motivation | text | YES | — |
-| status | text | NO | 'Nuovo' |
-| notes | text | YES | — |
+- Stati disponibili: Nuovo, In lavorazione, Contattata, Chiuso
 
 ## Policy RLS
 
@@ -223,6 +217,12 @@ Funzionalita:
 - Prevenzione doppi invii
 - Stato di caricamento
 
+## Vercel Analytics
+
+Il progetto utilizza **Vercel Analytics** per il monitoraggio delle visite. Il componente `<Analytics />` e integrato in `src/main.tsx` e raccoglie automaticamente le metriche delle pagine visitate.
+
+Non e richiesta configurazione aggiuntiva: Analytics funziona automaticamente dopo il deploy su Vercel.
+
 ## Deploy
 
 ```bash
@@ -230,6 +230,16 @@ npm run build
 ```
 
 La build viene deployata automaticamente su Vercel ad ogni push su `main`.
+
+## Script disponibili
+
+```bash
+npm run dev        # Server di sviluppo
+npm run build      # Build di produzione
+npm run typecheck  # Controllo tipi TypeScript
+npm run lint       # Linting ESLint
+npm run preview    # Anteprima build locale
+```
 
 ## Licenza
 
