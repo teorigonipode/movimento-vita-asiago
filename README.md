@@ -66,7 +66,7 @@ Il sito sara disponibile su `http://localhost:5173`.
 Applica le migration in ordine dalla dashboard SQL di Supabase:
 
 ```sql
--- Eseguire in sequenza dalla dashboard Supabase > SQL Editor:
+-- Eseguire in sequenza dall'SQL Editor di Supabase:
 
 -- 1. supabase/migrations/20260623150903_create_contact_and_volunteer_tables.sql
 -- 2. supabase/migrations/20260624074305_20260624000001_update_tables_and_rls.sql
@@ -78,8 +78,6 @@ Applica le migration in ordine dalla dashboard SQL di Supabase:
 **Nota:** I file sono in `supabase/migrations/`. Non usare i file in `src/migrations/` (obsoleto).
 
 ### Schema database finale
-
-Dopo aver applicato tutte le migration, il database avra:
 
 **Tabella `contact_messages`**
 - `id` (uuid, PK)
@@ -102,8 +100,6 @@ Dopo aver applicato tutte le migration, il database avra:
 - `motivation` (text, nullable)
 - `status` (text, NOT NULL, default 'Nuovo')
 - `notes` (text, nullable)
-
-**Nota:** La tabella `volunteer_requests` NON ha il campo `message` (rimosso).
 
 ### Creazione primo account admin
 
@@ -132,11 +128,9 @@ Il file `vercel.json` configurato con SPA rewrites garantisce il corretto routin
 | `/` | Home |
 | `/chi-siamo` | Chi siamo |
 | `/come-possiamo-aiutarti` | Servizi offerti |
-| `/testimonianze` | Testimonianze |
 | `/volontari` | Diventa volontario (form) |
 | `/donazioni` | Donazioni |
 | `/contatti` | Contatti (form) |
-| `/faq` | FAQ |
 | `/privacy-policy` | Privacy Policy |
 | `/cookie-policy` | Cookie Policy |
 
@@ -199,9 +193,9 @@ L'area admin richiede autenticazione con Supabase Auth.
 
 Le policy con `USING (true)` e `WITH CHECK (true)` sono **intenzionali**:
 
-- **INSERT (anon):** I form pubblici non richiedono autenticazione. La policy permette a chiunque di inviare richieste. I dati sono protetti perche anon non puo leggere, modificare o eliminare i record.
-- **SELECT/UPDATE (authenticated):** Gli amministratori autenticati possono vedere e modificare tutte le richieste. Non e necessario un controllo `auth.uid()` perche non esiste relazione utente-richiesta (le richieste vengono da utenti anonimi).
-- **DELETE:** Nessuna policy DELETE per nessun ruolo. Protezione dati integrale.
+- **INSERT (anon):** I form pubblici non richiedono autenticazione.
+- **SELECT/UPDATE (authenticated):** Gli admin gestiscono tutte le richieste.
+- **DELETE:** Nessuna policy per nessun ruolo (protezione dati).
 
 ## Form pubblici
 
@@ -210,16 +204,9 @@ I form salvano i dati direttamente su Supabase:
 - **Contatti:** `/contatti` → tabella `contact_messages`
 - **Volontari:** `/volontari` → tabella `volunteer_requests`
 
-Funzionalita:
-- Validazione client-side
-- Checkbox privacy obbligatoria
-- Gestione errori con messaggi rassicuranti
-- Prevenzione doppi invii
-- Stato di caricamento
-
 ## Vercel Analytics
 
-Il progetto utilizza **Vercel Analytics** per il monitoraggio delle visite. Il componente `<Analytics />` e integrato in `src/main.tsx` e raccoglie automaticamente le metriche delle pagine visitate.
+Il progetto utilizza **Vercel Analytics** per il monitoraggio delle visite. Il componente `<Analytics />` e integrato in `src/main.tsx`.
 
 Non e richiesta configurazione aggiuntiva: Analytics funziona automaticamente dopo il deploy su Vercel.
 

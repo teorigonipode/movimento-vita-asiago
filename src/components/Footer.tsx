@@ -25,7 +25,6 @@ export default function Footer() {
               <li><Link to="/volontari" className="hover:text-white transition-colors">Diventa volontario</Link></li>
               <li><Link to="/donazioni" className="hover:text-white transition-colors">Donazioni</Link></li>
               <li><Link to="/contatti" className="hover:text-white transition-colors">Contatti</Link></li>
-              <li><Link to="/faq" className="hover:text-white transition-colors">FAQ</Link></li>
             </ul>
           </div>
 

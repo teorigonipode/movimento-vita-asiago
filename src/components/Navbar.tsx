@@ -6,11 +6,9 @@ const navLinks = [
   { to: '/', label: 'Home' },
   { to: '/chi-siamo', label: 'Chi siamo' },
   { to: '/come-possiamo-aiutarti', label: 'Come possiamo aiutarti' },
-  { to: '/testimonianze', label: 'Testimonianze' },
   { to: '/volontari', label: 'Volontari' },
   { to: '/donazioni', label: 'Donazioni' },
   { to: '/contatti', label: 'Contatti' },
-  { to: '/faq', label: 'FAQ' },
 ];
 
 export default function Navbar() {
