@@ -59,7 +59,7 @@ Il sito sara disponibile su `http://localhost:5173`.
 |-----------|-------------|
 | `VITE_SUPABASE_URL` | URL del progetto Supabase |
 | `VITE_SUPABASE_ANON_KEY` | Chiave anonima (pubblica) di Supabase |
-| `VITE_PUBLIC_SITE_URL` | URL pubblico del sito (per canonical, OG, sitemap) |
+| `VITE_PUBLIC_SITE_URL` | URL pubblico del sito (per canonical, OG, sitemap). Ora: `https://movimento-vita-asiago.vercel.app`, in futuro: dominio definitivo |
 
 ## Configurazione Supabase
 
@@ -196,8 +196,8 @@ Il sito e preparato per l'indicizzazione con:
 Aggiornare:
 
 1. `VITE_PUBLIC_SITE_URL` su Vercel (Environment Variables)
-2. `public/robots.txt` - decommentare e aggiornare la riga Sitemap
-3. `public/sitemap.xml` - sostituire `https://your-domain.com` con il dominio reale
+2. `public/robots.txt` - aggiornare la riga Sitemap
+3. `public/sitemap.xml` - sostituire `https://movimento-vita-asiago.vercel.app` con il dominio reale
 4. Verificare su Google Search Console
 
 ### Google Search Console (da fare dopo dominio definitivo)
@@ -205,7 +205,7 @@ Aggiornare:
 1. Accedere a [Google Search Console](https://search.google.com/search-console)
 2. Aggiungere la proprieta con il dominio definitivo
 3. Verificare la proprieta (DNS o file HTML)
-4. Inviare la sitemap: `https://tuo-dominio.com/sitemap.xml`
+4. Inviare la sitemap: `https://<dominio-definitivo>/sitemap.xml`
 5. Monitorare indicizzazione e errori
 
 ## Policy RLS
