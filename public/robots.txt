@@ -1,0 +1,11 @@
+# Robots.txt per Movimento per la Vita Asiago
+# Aggiornare il dominio quando verrà scelto quello definitivo
+
+User-agent: *
+Allow: /
+
+Disallow: /admin
+Disallow: /admin/
+
+# Sitemap: aggiornare con il dominio definitivo
+# Sitemap: https://your-domain.com/sitemap.xml

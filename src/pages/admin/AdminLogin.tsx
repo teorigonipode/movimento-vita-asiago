@@ -48,7 +48,7 @@ export default function AdminLogin() {
 
   return (
     <div className="min-h-screen bg-mv-cream flex items-center justify-center px-4">
-      <SEO title="Area Admin" description="Accesso riservato per gli operatori del Movimento per la Vita Asiago." />
+      <SEO title="Area Admin" description="Accesso riservato per gli operatori del Movimento per la Vita Asiago." noIndex />
 
       <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-8">
         <div className="text-center mb-8">

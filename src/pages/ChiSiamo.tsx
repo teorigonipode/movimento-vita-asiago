@@ -13,7 +13,8 @@ export default function ChiSiamo() {
     <div>
       <SEO
         title="Chi siamo"
-        description="La sede di Asiago del Movimento per la Vita Italiano: un gruppo di volontari uniti dalla volontà di aiutare chi è in difficoltà."
+        description="La sede di Asiago del Movimento per la Vita Italiano: un gruppo di volontari uniti dalla volontà di aiutare chi e in difficolta."
+        path="/chi-siamo"
       />
       <section className="bg-mv-blue py-16 md:py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">

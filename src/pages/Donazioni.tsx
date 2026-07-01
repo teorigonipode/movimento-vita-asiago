@@ -7,7 +7,8 @@ export default function Donazioni() {
     <div>
       <SEO
         title="Donazioni"
-        description="Il tuo contributo ci permette di aiutare chi è in difficoltà. Ogni donazione, grande o piccola, fa la differenza."
+        description="Il tuo contributo ci permette di aiutare chi e in difficolta. Ogni donazione, grande o piccola, fa la differenza."
+        path="/donazioni"
       />
       <section className="bg-mv-blue py-16 md:py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">

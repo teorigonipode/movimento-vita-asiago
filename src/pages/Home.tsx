@@ -8,7 +8,8 @@ export default function Home() {
     <div>
       <SEO
         title="Movimento per la Vita Asiago"
-        description="Ascolto, accoglienza e aiuto concreto per chi è in difficoltà. Sede locale del Movimento per la Vita Italiano."
+        description="Ascolto, accoglienza e aiuto concreto per chi e in difficolta. Sede locale del Movimento per la Vita Italiano."
+        path="/"
       />
       {/* Hero */}
       <section className="relative bg-mv-blue overflow-hidden">

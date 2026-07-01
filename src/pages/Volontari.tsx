@@ -103,6 +103,7 @@ export default function Volontari() {
       <SEO
         title="Diventa volontario"
         description="Unisciti al Movimento per la Vita Asiago. Il tuo tempo e la tua empatia possono fare la differenza nella vita di qualcuno."
+        path="/volontari"
       />
 
       <section className="bg-mv-blue py-16 md:py-24">

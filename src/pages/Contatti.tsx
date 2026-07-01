@@ -105,6 +105,7 @@ export default function Contatti() {
       <SEO
         title="Contatti"
         description="Contatta il Movimento per la Vita Asiago. Siamo qui per ascoltarti e aiutarti con discrezione e riservatezza."
+        path="/contatti"
       />
 
       <section className="bg-mv-blue py-16 md:py-24">

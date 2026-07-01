@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Save, Phone, Mail, Calendar, Users, AlertCircle, CheckCircle } from 'lucide-react';
 import { supabase, type VolunteerRequest } from '../../lib/supabase';
+import SEO from '../../components/SEO';
 
 const statuses = ['Nuovo', 'In lavorazione', 'Contattata', 'Chiuso'];
 
@@ -97,6 +98,7 @@ export default function AdminVolunteerDetail() {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <SEO title="Dettaglio Candidatura" description="" noIndex />
       {/* Header */}
       <header className="bg-mv-blue text-white">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">

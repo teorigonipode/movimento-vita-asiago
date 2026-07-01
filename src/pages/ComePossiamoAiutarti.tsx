@@ -53,6 +53,7 @@ export default function ComePossiamoAiutarti() {
       <SEO
         title="Come possiamo aiutarti"
         description="I nostri servizi sono gratuiti, riservati e accessibili a tutti. Ascolto, supporto materiale e orientamento ai servizi."
+        path="/come-possiamo-aiutarti"
       />
       <section className="bg-mv-blue py-16 md:py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">

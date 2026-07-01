@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Search, Filter, MessageSquare, Users, LogOut, ChevronRight, Inbox, Phone, Calendar } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { supabase, type ContactMessage } from '../../lib/supabase';
+import SEO from '../../components/SEO';
 
 type StatusFilter = 'Tutti' | 'Nuovo' | 'In lavorazione' | 'Contattata' | 'Chiuso';
 
@@ -71,6 +72,7 @@ export default function AdminDashboard() {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <SEO title="Dashboard Richieste" description="" noIndex />
       {/* Header */}
       <header className="bg-mv-blue text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">

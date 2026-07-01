@@ -43,6 +43,7 @@ cp .env.example .env
 ```
 VITE_SUPABASE_URL=https://tuo-progetto.supabase.co
 VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIs...
+VITE_PUBLIC_SITE_URL=https://tuo-sito.vercel.app
 ```
 
 5. Avvia il server di sviluppo:
@@ -52,14 +53,15 @@ npm run dev
 
 Il sito sara disponibile su `http://localhost:5173`.
 
-## Configurazione Supabase
-
-### Variabili ambiente
+## Variabili ambiente
 
 | Variabile | Descrizione |
 |-----------|-------------|
 | `VITE_SUPABASE_URL` | URL del progetto Supabase |
 | `VITE_SUPABASE_ANON_KEY` | Chiave anonima (pubblica) di Supabase |
+| `VITE_PUBLIC_SITE_URL` | URL pubblico del sito (per canonical, OG, sitemap) |
+
+## Configurazione Supabase
 
 ### Setup database
 
@@ -114,7 +116,7 @@ Applica le migration in ordine dalla dashboard SQL di Supabase:
 1. Crea un nuovo progetto su Vercel importando questo repository
 2. Aggiungi le variabili ambiente in Vercel:
    - Vai su **Project Settings > Environment Variables**
-   - Aggiungi `VITE_SUPABASE_URL` e `VITE_SUPABASE_ANON_KEY`
+   - Aggiungi `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`, `VITE_PUBLIC_SITE_URL`
 3. Il deploy avverra automaticamente ad ogni push su `main`
 
 Il file `vercel.json` configurato con SPA rewrites garantisce il corretto routing di tutte le pagine.
@@ -134,7 +136,7 @@ Il file `vercel.json` configurato con SPA rewrites garantisce il corretto routin
 | `/privacy-policy` | Privacy Policy |
 | `/cookie-policy` | Cookie Policy |
 
-### Area admin
+### Area admin (non indicizzata)
 
 | Route | Descrizione |
 |-------|-------------|
@@ -146,7 +148,7 @@ Il file `vercel.json` configurato con SPA rewrites garantisce il corretto routin
 
 ## Area admin
 
-L'area admin richiede autenticazione con Supabase Auth.
+L'area admin richiede autenticazione con Supabase Auth. Tutte le pagine admin hanno `noindex, nofollow` per evitare indicizzazione.
 
 ### Autenticazione
 
@@ -154,14 +156,6 @@ L'area admin richiede autenticazione con Supabase Auth.
 - **Sessione:** Persistente (localStorage), sopravvive al refresh
 - **Logout:** Disconnessione con cancellazione sessione
 - **Recupero password:** Tramite dashboard Supabase (Authentication > Users > Send password reset)
-
-### Comportamento routing
-
-- Utente non autenticato su `/admin` → mostra login
-- Utente autenticato su `/admin` → redirect a `/admin/dashboard`
-- Utente autenticato su route admin → accesso consentito
-- Refresh su route admin → sessione mantenuta, nessun redirect
-- Logout → redirect al login
 
 ### Funzionalita
 
@@ -171,31 +165,68 @@ L'area admin richiede autenticazione con Supabase Auth.
 - Dettaglio candidatura (modifica stato, note interne)
 - Stati disponibili: Nuovo, In lavorazione, Contattata, Chiuso
 
+## SEO e indicizzazione
+
+### Configurazione
+
+Il sito e preparato per l'indicizzazione con:
+
+- **Canonical URL:** Tutte le pagine pubbliche hanno canonical URL dinamico basato su `VITE_PUBLIC_SITE_URL`
+- **robots.txt:** Configurato per permettere indicizzazione pagine pubbliche e bloccare `/admin`
+- **sitemap.xml:** Contiene tutte le pagine pubbliche (da aggiornare con dominio definitivo)
+- **Meta robots:** Area admin con `noindex, nofollow`
+- **Open Graph:** Configurato con title, description, image, url, site_name
+
+### Pagine indicizzate
+
+- `/` (Home)
+- `/chi-siamo`
+- `/come-possiamo-aiutarti`
+- `/volontari`
+- `/donazioni`
+- `/contatti`
+
+### Pagine escluse
+
+- Tutte le route `/admin/*` (noindex, nofollow)
+- `/privacy-policy` e `/cookie-policy` (pagine legali)
+
+### Quando verra scelto il dominio definitivo
+
+Aggiornare:
+
+1. `VITE_PUBLIC_SITE_URL` su Vercel (Environment Variables)
+2. `public/robots.txt` - decommentare e aggiornare la riga Sitemap
+3. `public/sitemap.xml` - sostituire `https://your-domain.com` con il dominio reale
+4. Verificare su Google Search Console
+
+### Google Search Console (da fare dopo dominio definitivo)
+
+1. Accedere a [Google Search Console](https://search.google.com/search-console)
+2. Aggiungere la proprieta con il dominio definitivo
+3. Verificare la proprieta (DNS o file HTML)
+4. Inviare la sitemap: `https://tuo-dominio.com/sitemap.xml`
+5. Monitorare indicizzazione e errori
+
 ## Policy RLS
 
 ### contact_messages
 
-| Policy | Ruolo | Comando | Condizione |
-|--------|-------|---------|------------|
-| public_insert_contact_messages | anon | INSERT | WITH CHECK (true) |
-| auth_select_contact_messages | authenticated | SELECT | USING (true) |
-| auth_update_contact_messages | authenticated | UPDATE | USING (true) WITH CHECK (true) |
+| Policy | Ruolo | Comando |
+|--------|-------|---------|
+| public_insert_contact_messages | anon | INSERT |
+| auth_select_contact_messages | authenticated | SELECT |
+| auth_update_contact_messages | authenticated | UPDATE |
 
 ### volunteer_requests
 
-| Policy | Ruolo | Comando | Condizione |
-|--------|-------|---------|------------|
-| public_insert_volunteer_requests | anon | INSERT | WITH CHECK (true) |
-| auth_select_volunteer_requests | authenticated | SELECT | USING (true) |
-| auth_update_volunteer_requests | authenticated | UPDATE | USING (true) WITH CHECK (true) |
+| Policy | Ruolo | Comando |
+|--------|-------|---------|
+| public_insert_volunteer_requests | anon | INSERT |
+| auth_select_volunteer_requests | authenticated | SELECT |
+| auth_update_volunteer_requests | authenticated | UPDATE |
 
-### Note sui warning RLS
-
-Le policy con `USING (true)` e `WITH CHECK (true)` sono **intenzionali**:
-
-- **INSERT (anon):** I form pubblici non richiedono autenticazione.
-- **SELECT/UPDATE (authenticated):** Gli admin gestiscono tutte le richieste.
-- **DELETE:** Nessuna policy per nessun ruolo (protezione dati).
+**Nota:** Nessuna policy DELETE per nessun ruolo (protezione dati).
 
 ## Form pubblici
 
