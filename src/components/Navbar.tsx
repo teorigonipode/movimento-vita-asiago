@@ -8,6 +8,7 @@ const navLinks = [
   { to: '/come-possiamo-aiutarti', label: 'Come possiamo aiutarti' },
   { to: '/donazioni', label: 'Donazioni' },
   { to: '/volontari', label: 'Volontari' },
+  { to: '/notizie', label: 'Notizie' },
   { to: '/contatti', label: 'Contatti' },
 ];
 

@@ -24,6 +24,21 @@ interface VolunteerRequest {
   notes: string | null;
 }
 
+interface NewsPost {
+  id: string;
+  created_at: string;
+  updated_at: string;
+  title: string;
+  slug: string;
+  excerpt: string | null;
+  content: string;
+  category: string;
+  event_date: string | null;
+  cover_image_url: string | null;
+  status: string;
+  published_at: string | null;
+}
+
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
@@ -46,4 +61,4 @@ if (!supabaseUrl || !supabaseKey) {
 
 export const supabase = client;
 export const getSupabaseError = () => configError;
-export type { ContactMessage, VolunteerRequest };
+export type { ContactMessage, VolunteerRequest, NewsPost };

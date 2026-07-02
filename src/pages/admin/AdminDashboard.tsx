@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, Filter, MessageSquare, Users, LogOut, ChevronRight, Inbox, Phone, Calendar } from 'lucide-react';
+import { Search, Filter, MessageSquare, Users, LogOut, ChevronRight, Inbox, Phone, Calendar, Newspaper } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { supabase, type ContactMessage } from '../../lib/supabase';
 import SEO from '../../components/SEO';
@@ -90,6 +90,13 @@ export default function AdminDashboard() {
             >
               <Users className="w-4 h-4" />
               Volontari
+            </a>
+            <a
+              href="/admin/news"
+              className="hidden sm:flex items-center gap-2 px-4 py-2 bg-white/10 rounded-lg hover:bg-white/20 transition-colors text-sm"
+            >
+              <Newspaper className="w-4 h-4" />
+              Notizie
             </a>
             <button
               onClick={handleLogout}
