@@ -75,6 +75,8 @@ Applica le migration in ordine dalla dashboard SQL di Supabase:
 -- 3. supabase/migrations/20260624080613_20260624000002_remove_message_from_volunteers.sql
 -- 4. supabase/migrations/20260624080718_20260624000003_unified_schema.sql
 -- 5. supabase/migrations/20260624082733_20260624000004_admin_rls_policies.sql
+-- 6. supabase/migrations/20260702070932_20260702000001_create_news_posts_table.sql.sql
+-- 7. supabase/migrations/20260702070933_remove_news_delete_policy.sql
 ```
 
 **Nota:** I file sono in `supabase/migrations/`. Non usare i file in `src/migrations/` (obsoleto).
@@ -102,6 +104,20 @@ Applica le migration in ordine dalla dashboard SQL di Supabase:
 - `motivation` (text, nullable)
 - `status` (text, NOT NULL, default 'Nuovo')
 - `notes` (text, nullable)
+
+**Tabella `news_posts`**
+- `id` (uuid, PK)
+- `title` (text, NOT NULL)
+- `slug` (text, NOT NULL, unique)
+- `excerpt` (text, nullable)
+- `content` (text, NOT NULL)
+- `category` (text, NOT NULL, default 'notizia') - valori: `notizia`, `evento`, `comunicazione`
+- `event_date` (date, nullable)
+- `cover_image_url` (text, nullable)
+- `status` (text, NOT NULL, default 'draft') - valori: `draft`, `published`, `archived`
+- `published_at` (timestamptz, nullable)
+- `created_at` (timestamptz, NOT NULL)
+- `updated_at` (timestamptz, NOT NULL)
 
 ### Creazione primo account admin
 
@@ -132,6 +148,8 @@ Il file `vercel.json` configurato con SPA rewrites garantisce il corretto routin
 | `/come-possiamo-aiutarti` | Servizi offerti |
 | `/volontari` | Diventa volontario (form) |
 | `/donazioni` | Donazioni |
+| `/notizie` | Notizie ed eventi |
+| `/notizie/:slug` | Dettaglio notizia |
 | `/contatti` | Contatti (form) |
 | `/privacy-policy` | Privacy Policy |
 | `/cookie-policy` | Cookie Policy |
@@ -145,6 +163,9 @@ Il file `vercel.json` configurato con SPA rewrites garantisce il corretto routin
 | `/admin/requests/:id` | Dettaglio richiesta |
 | `/admin/volunteers` | Elenco candidature volontari |
 | `/admin/volunteers/:id` | Dettaglio candidatura |
+| `/admin/news` | Gestione notizie |
+| `/admin/news/new` | Crea nuova notizia |
+| `/admin/news/:id/edit` | Modifica notizia |
 
 ## Area admin
 
@@ -163,7 +184,18 @@ L'area admin richiede autenticazione con Supabase Auth. Tutte le pagine admin ha
 - Dettaglio richiesta (modifica stato, note interne)
 - Dashboard candidature volontari (ricerca, filtri, ordinamento)
 - Dettaglio candidatura (modifica stato, note interne)
+- Gestione notizie ed eventi (creazione, modifica, pubblicazione, archiviazione)
 - Stati disponibili: Nuovo, In lavorazione, Contattata, Chiuso
+
+### Gestione Notizie
+
+L'area admin include la gestione delle notizie ed eventi:
+
+- **Categorie:** notizia, evento, comunicazione
+- **Stati:** draft (bozza), published (pubblicato), archived (archiviato)
+- **Pubblicazione:** automatica al passaggio da draft a published
+- **Archiviazione:** le notizie archiviate non sono visibili pubblicamente
+- **Slug:** generato automaticamente dal titolo, modificabile
 
 ## SEO e indicizzazione
 
@@ -184,12 +216,16 @@ Il sito e preparato per l'indicizzazione con:
 - `/come-possiamo-aiutarti`
 - `/volontari`
 - `/donazioni`
+- `/notizie`
+- `/notizie/:slug` (solo se status = published)
 - `/contatti`
 
 ### Pagine escluse
 
 - Tutte le route `/admin/*` (noindex, nofollow)
+- `/admin/news`, `/admin/news/new`, `/admin/news/:id/edit` (area admin)
 - `/privacy-policy` e `/cookie-policy` (pagine legali)
+- Notizie con status `draft` o `archived` (non visibili pubblicamente)
 
 ### Quando verra scelto il dominio definitivo
 
@@ -226,7 +262,19 @@ Aggiornare:
 | auth_select_volunteer_requests | authenticated | SELECT |
 | auth_update_volunteer_requests | authenticated | UPDATE |
 
-**Nota:** Nessuna policy DELETE per nessun ruolo (protezione dati).
+### news_posts
+
+| Policy | Ruolo | Comando |
+|--------|-------|---------|
+| public_select_published_news | anon, authenticated | SELECT (status = 'published') |
+| admin_select_all_news | authenticated | SELECT |
+| admin_insert_news | authenticated | INSERT |
+| admin_update_news | authenticated | UPDATE |
+
+**Nota:** 
+- Nessuna policy DELETE per nessun ruolo (protezione dati).
+- Le notizie si gestiscono tramite stato: draft, published, archived.
+- Solo le notizie con status = 'published' sono visibili pubblicamente.
 
 ## Form pubblici
 
