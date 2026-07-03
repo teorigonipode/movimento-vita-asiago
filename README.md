@@ -76,7 +76,7 @@ Applica le migration in ordine dalla dashboard SQL di Supabase:
 -- 4. supabase/migrations/20260624080718_20260624000003_unified_schema.sql
 -- 5. supabase/migrations/20260624082733_20260624000004_admin_rls_policies.sql
 -- 6. supabase/migrations/20260702070932_20260702000001_create_news_posts_table.sql.sql
--- 7. supabase/migrations/20260702070933_remove_news_delete_policy.sql
+-- 7. supabase/migrations/20260702075352_20260702070933_remove_news_delete_policy.sql.sql
 ```
 
 **Nota:** I file sono in `supabase/migrations/`. Non usare i file in `src/migrations/` (obsoleto).

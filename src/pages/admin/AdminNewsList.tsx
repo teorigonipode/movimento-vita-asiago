@@ -121,13 +121,22 @@ export default function AdminNewsList() {
               <p className="text-xs text-gray-300">{user?.email}</p>
             </div>
           </div>
-          <button
-            onClick={handleLogout}
-            className="flex items-center gap-2 px-4 py-2 bg-white/10 rounded-lg hover:bg-white/20 transition-colors text-sm"
-          >
-            <LogOut className="w-4 h-4" />
-            <span className="hidden sm:inline">Esci</span>
-          </button>
+          <div className="flex items-center gap-3">
+            <a
+              href="/admin/dashboard"
+              className="hidden sm:flex items-center gap-2 px-4 py-2 bg-white/10 rounded-lg hover:bg-white/20 transition-colors text-sm"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              Richieste
+            </a>
+            <button
+              onClick={handleLogout}
+              className="flex items-center gap-2 px-4 py-2 bg-white/10 rounded-lg hover:bg-white/20 transition-colors text-sm"
+            >
+              <LogOut className="w-4 h-4" />
+              <span className="hidden sm:inline">Esci</span>
+            </button>
+          </div>
         </div>
       </header>
 
