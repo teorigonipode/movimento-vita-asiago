@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Heart, Mail, Phone, MapPin } from 'lucide-react';
+import { siteConfig } from '../config/site';
 
 export default function Footer() {
   return (
@@ -8,7 +9,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
           <div>
             <div className="flex items-center gap-2 mb-4">
-              <Heart className="w-6 h-6 text-mv-teal fill-mv-teal" />
+              <Heart className="w-6 h-6 text-mv-teal fill-mv-teal" aria-hidden="true" />
               <span className="font-semibold text-lg">Movimento per la Vita Asiago</span>
             </div>
             <p className="text-gray-300 text-sm leading-relaxed">
@@ -33,16 +34,16 @@ export default function Footer() {
             <h3 className="font-semibold mb-4 text-mv-gold">Contatti</h3>
             <ul className="space-y-3 text-sm text-gray-300">
               <li className="flex items-start gap-2">
-                <MapPin className="w-4 h-4 mt-0.5 text-mv-teal shrink-0" />
-                <span>Via Roma 1, 36012 Asiago (VI)</span>
+                <MapPin className="w-4 h-4 mt-0.5 text-mv-teal shrink-0" aria-hidden="true" />
+                <span>{siteConfig.address}</span>
               </li>
               <li className="flex items-center gap-2">
-                <Phone className="w-4 h-4 text-mv-teal shrink-0" />
-                <a href="tel:+39000000000" className="hover:text-white transition-colors">+39 000 000 000</a>
+                <Phone className="w-4 h-4 text-mv-teal shrink-0" aria-hidden="true" />
+                <a href={siteConfig.phone.href} className="hover:text-white transition-colors">{siteConfig.phone.display}</a>
               </li>
               <li className="flex items-center gap-2">
-                <Mail className="w-4 h-4 text-mv-teal shrink-0" />
-                <a href="mailto:info@movimentovitaasiago.it" className="hover:text-white transition-colors">info@movimentovitaasiago.it</a>
+                <Mail className="w-4 h-4 text-mv-teal shrink-0" aria-hidden="true" />
+                <a href={`mailto:${siteConfig.email}`} className="hover:text-white transition-colors">{siteConfig.email}</a>
               </li>
             </ul>
           </div>
@@ -52,13 +53,13 @@ export default function Footer() {
             <ul className="space-y-2 text-sm text-gray-300">
               <li>Movimento per la Vita Italiano</li>
               <li>Associazione senza scopo di lucro</li>
-              <li>C.F. / P.IVA da inserire</li>
+              <li>Codice Fiscale / P.IVA: da verificare</li>
             </ul>
           </div>
         </div>
 
         <div className="mt-12 pt-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-gray-400">
-          <p>© {new Date().getFullYear()} Movimento per la Vita Asiago. Tutti i diritti riservati.</p>
+          <p>&copy; {new Date().getFullYear()} Movimento per la Vita Asiago. Tutti i diritti riservati.</p>
           <div className="flex items-center gap-4">
             <Link to="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link>
             <Link to="/cookie-policy" className="hover:text-white transition-colors">Cookie Policy</Link>

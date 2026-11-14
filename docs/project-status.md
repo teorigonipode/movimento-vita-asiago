@@ -6,56 +6,134 @@ Updated: 2026-11-13
 
 - Repository: `teorigonipode/movimento-vita-asiago`
 - Branch: `main`
-- Last audited HEAD before this document: `ca0de98aa5e233a366bac3c9ae660ff470bac368`
+- Last audited HEAD before cleanup: `ca0de98aa5e233a366bac3c9ae660ff470bac368`
+- HEAD after cleanup: post-cleanup commit (see git log)
 - Production hosting: Vercel
 - Current temporary production URL: `https://movimento-vita-asiago.vercel.app`
 
-## Current stack
+## Cleanup history
 
-- React 18
-- TypeScript
-- Vite
-- Tailwind CSS
-- React Router
-- Vercel Analytics
-- Vercel hosting
+### Before cleanup (legacy state)
 
-## Architecture decision
-
-The current production architecture must become fully independent from Supabase and Bolt runtime infrastructure.
-
-Target:
-
-GitHub -> Vercel -> future custom domain
-
-Bolt can be used as a development tool, but the deployed application must not require Bolt Database, Bolt Auth, Bolt Hosting or Bolt server functions.
-
-Supabase is legacy and must be removed from the runtime.
-
-## Supabase legacy currently present
-
-The current repository still contains:
-
-- `@supabase/supabase-js`
-- `src/lib/supabase.ts`
-- `src/contexts/AuthContext.tsx`
+The repository contained a full Supabase backend:
+- `@supabase/supabase-js` dependency
+- `src/lib/supabase.ts` client
+- `src/contexts/AuthContext.tsx` Supabase Auth
 - `src/components/ProtectedRoute.tsx`
 - `src/components/SupabaseError.tsx`
-- public contact form -> `contact_messages`
-- volunteer form -> `volunteer_requests`
-- news -> `news_posts`
-- Supabase Auth admin area
-- admin contact/volunteer/news pages
-- `supabase/migrations/`
-- obsolete duplicated `src/migrations/`
-- `VITE_SUPABASE_URL`
-- `VITE_SUPABASE_ANON_KEY`
+- public contact form → `contact_messages` table
+- volunteer form → `volunteer_requests` table
+- news → `news_posts` table with network fetch
+- Supabase Auth admin area (7 admin pages)
+- `supabase/migrations/` directory
+- duplicate `src/migrations/` directory
+- `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` env variables
 
-These are legacy and should not remain part of the runtime after cleanup.
+### After cleanup (current state)
 
-## Target public routes
+**Supabase removed:**
+- `@supabase/supabase-js` removed from package.json
+- No Supabase runtime imports
+- No Supabase env variables
+- All migration directories deleted
+- `src/lib/supabase.ts`, `src/contexts/AuthContext.tsx`, `src/components/ProtectedRoute.tsx`, `src/components/SupabaseError.tsx` deleted
 
-Keep:
+**Admin area removed:**
+- All `/admin/*` routes removed from routing
+- All admin page components deleted
+- No authentication system in the project
+
+**Forms removed:**
+- Contact form replaced with direct phone/email CTAs
+- Volunteer form replaced with direct phone/email CTAs
+- No data collection, no database storage
+
+**News made static:**
+- `src/content/news.ts` — static content source (empty, ready for real content)
+- `src/services/news.ts` — service layer (future replacement point)
+- `src/pages/Notizie.tsx` — uses service, no network requests
+- `src/pages/NotiziaDetail.tsx` — uses service, no network requests
+
+**Centralized config:**
+- `src/config/site.ts` — single source for site name, phone, email, address
+- Navbar, Footer, Home, Contatti, Volontari, Donazioni all use centralized config
+
+**Dangerous placeholders secured:**
+- Fake IBAN removed from Donazioni page — replaced with "Contattaci per conoscere le modalità aggiornate di donazione"
+- Fake 5x1000 tax code removed — replaced with "Contattaci per ricevere il codice corretto"
+- "Bilancio annuale pubblicato" and "Detrazioni fiscali" claims removed (unverified)
+- Phone `+39 000 000 000` remains as placeholder (marked as needing verification)
+- Email `info@movimentovitaasiago.it` remains (needs verification before domain exists)
+- CF/PIVA shown as "da verificare" in Footer
+
+**Documentation added:**
+- `docs/legacy-supabase.md` — historical summary of removed Supabase backend
+- `docs/backend-roadmap.md` — when and how a backend may return
+- `docs/domain-and-seo.md` — domain configuration roadmap
+- `docs/project-status.md` — this document, updated
+
+**SEO maintained:**
+- `SEO.tsx` component unchanged (dynamic canonical, OG, Twitter Card)
+- `robots.txt` updated — removed `/admin` disallow
+- `sitemap.xml` unchanged — already correct with public routes
+- `VITE_PUBLIC_SITE_URL` remains the single source for canonical URLs
+
+**Vercel Analytics:** confirmed active in `src/main.tsx`, retained.
+
+## Current architecture
+
+```
+GitHub → Vercel → future custom domain
+```
+
+- React 18 + TypeScript + Vite + Tailwind CSS
+- React Router DOM v7
+- Vercel Analytics
+- Vercel hosting
+- No backend, no database, no authentication
+- News as static content versioned on Git
+
+## Portability
+
+The site is fully portable:
+- `git clone` → `npm install` → `npm run build` is sufficient
+- No Bolt runtime dependency
+- No Supabase dependency
+- No external backend required
+- PORTABILITY CHECK: PASS
+
+## Placeholder report
+
+| Dato | Valore attuale | Stato | File | Azione |
+|------|---------------|-------|------|--------|
+| Telefono | +39 000 000 000 | PLACEHOLDER | `src/config/site.ts` | Verificare numero reale |
+| Email | info@movimentovitaasiago.it | DA VERIFICARE | `src/config/site.ts` | Verificare dominio/ email reale |
+| Indirizzo | Via Roma 1, 36012 Asiago (VI) | DA VERIFICARE | `src/config/site.ts` | Verificare indirizzo reale |
+| IBAN | Non mostrato | NASCOSTO | — | Fornire IBAN reale quando disponibile |
+| CF / P.IVA | "da verificare" | PLACEHOLDER | `src/components/Footer.tsx` | Fornire valore reale |
+| 5x1000 | Non mostrato | NASCOSTO | — | Fornire codice fiscale quando disponibile |
+| Bilancio annuale | Non affermato | RIMOSSO | — | Verificare prima di reintrodurre |
+| Detrazioni fiscali | Non affermato | RIMOSSO | — | Verificare prima di reintrodurre |
+
+## Legal review
+
+LEGAL REVIEW NEEDED:
+- Privacy Policy: verificare con referente associativo che i dati raccolti via telefono/email siano coperti correttamente
+- Cookie Policy: Vercel Analytics è citato come attivo — confermare che la descrizione è accurata
+- Affermazioni su riservatezza ("non condividiamo mai informazioni con terzi") — confermare con referente associativo
+
+## Route eliminate
+
+- `/admin`
+- `/admin/dashboard`
+- `/admin/requests/:id`
+- `/admin/volunteers`
+- `/admin/volunteers/:id`
+- `/admin/news`
+- `/admin/news/new`
+- `/admin/news/:id/edit`
+
+## Route mantenute
 
 - `/`
 - `/chi-siamo`
@@ -68,92 +146,36 @@ Keep:
 - `/privacy-policy`
 - `/cookie-policy`
 
-Remove the current `/admin/*` runtime.
+## Dipendenze
 
-## Contacts
+### Rimosse
+- `@supabase/supabase-js`
 
-Public contact flows must use only direct contact methods:
+### Attuali
+- `react`, `react-dom` — 18.x
+- `react-router-dom` — 7.x
+- `lucide-react` — 0.x
+- `@vercel/analytics` — 2.x
+- Dev: `vite`, `typescript`, `tailwindcss`, `eslint`, `typescript-eslint`
 
-- phone
-- email
+Nessun major upgrade eseguito. Patch/minor applicati via `npm install`.
 
-No contact form and no database storage.
+## Debito tecnico residuo
 
-The volunteer page must also use direct phone/email CTAs instead of a form.
+- Dati di contatto (telefono, email, indirizzo) sono placeholder da verificare
+- IBAN e codice fiscale 5x1000 non disponibili — pagine mostrano CTA di contatto
+- CF/PIVA non disponibile — Footer mostra "da verificare"
+- Notizie: array vuoto, nessun contenuto reale ancora pubblicato
+- Privacy/Cookie policy richiedono validazione legale/associativa
 
-## News
+## Prossimi passi consigliati
 
-News is intentionally preserved.
-
-Target architecture:
-
-`src/content/news.ts`
--> `src/services/news.ts`
--> `Notizie` / `NotiziaDetail`
-
-The service layer is intentional so a CMS/backend can be reintroduced later without rewriting the UI.
-
-Do not invent news or events if no verified content is available.
-
-## Backend roadmap
-
-Do not introduce a new backend now.
-
-A backend/CMS becomes justified when non-technical association members need to manage content without Git/Bolt, or when requirements include drafts, scheduled publishing, image uploads, multiple editors, newsletters or workflow management.
-
-## Known placeholders / data requiring verification
-
-Do not invent replacements.
-
-Currently found:
-
-- phone: `+39 000 000 000`
-- address: `Via Roma 1, 36012 Asiago (VI)`
-- email: `info@movimentovitaasiago.it` — must be verified before the domain exists
-- IBAN: `IT00 X 0000 0000 0000 0000 000`
-- Codice Fiscale / P.IVA: missing
-- 5x1000 tax code: missing
-- claims such as "Bilancio annuale pubblicato" and "Detrazioni fiscali per le donazioni" require human verification
-
-Potentially dangerous placeholders such as fake phone, IBAN or tax identifiers must not be presented as usable production data.
-
-## SEO / domain
-
-Current SEO infrastructure already includes:
-
-- dynamic canonical based on `VITE_PUBLIC_SITE_URL`
-- Open Graph metadata
-- robots.txt
-- sitemap.xml
-- Vercel Analytics
-
-Future domain work is intentionally deferred.
-
-When the final domain is chosen:
-
-1. configure it on Vercel;
-2. update `VITE_PUBLIC_SITE_URL`;
-3. update robots sitemap URL;
-4. update sitemap URLs;
-5. set canonical redirect behavior;
-6. add Google Search Console;
-7. submit sitemap;
-8. perform a local SEO audit.
-
-## Cleanup acceptance criteria
-
-After cleanup:
-
-- no Supabase dependency in package.json;
-- no Supabase runtime imports;
-- no Supabase env variables;
-- no public forms storing personal data;
-- no runtime admin/auth area;
-- news works without network/database calls;
-- app builds without backend configuration;
-- `npm run typecheck` passes;
-- `npm run lint` passes;
-- `npm run build` passes;
-- production deploy on Vercel is READY;
-- no Bolt runtime dependency;
-- no unsafe placeholder is exposed as real production data.
+1. Fornire numero di telefono reale
+2. Verificare/creare email associativa reale
+3. Verificare indirizzo sede reale
+4. Fornire IBAN per donazioni
+5. Fornire CF/PIVA
+6. Fornire codice fiscale per 5x1000
+7. Validare Privacy Policy e Cookie Policy con referente legale
+8. Pubblicare prime notizie reali in `src/content/news.ts`
+9. Acquisire dominio definitivo e seguire `docs/domain-and-seo.md`

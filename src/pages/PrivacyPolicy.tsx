@@ -6,6 +6,7 @@ export default function PrivacyPolicy() {
       <SEO
         title="Privacy Policy"
         description="Informativa sul trattamento dei dati personali ai sensi del Regolamento UE 2016/679 (GDPR)."
+        path="/privacy-policy"
       />
       <section className="bg-mv-blue py-16 md:py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -29,17 +30,17 @@ export default function PrivacyPolicy() {
           <div>
             <h2 className="text-xl font-bold text-mv-blue mb-3">Dati raccolti</h2>
             <p className="text-gray-600 leading-relaxed">
-              Raccogliamo i dati personali che ci fornisci volontariamente attraverso i moduli di contatto, 
-              di richiesta di volontariato o via email/telefono. I dati possono includere nome, cognome, 
-              indirizzo email, numero di telefono e il contenuto dei messaggi.
+              Raccogliamo i dati personali che ci fornisci volontariamente quando ci contatti
+              via email o telefono. I dati possono includere nome, indirizzo email,
+              numero di telefono e il contenuto delle comunicazioni.
             </p>
           </div>
 
           <div>
             <h2 className="text-xl font-bold text-mv-blue mb-3">Finalità del trattamento</h2>
             <p className="text-gray-600 leading-relaxed">
-              I dati sono trattati esclusivamente per rispondere alle tue richieste, gestire le comunicazioni, 
-              organizzare l'attività di volontariato e fornire i servizi richiesti. Non utilizziamo i dati 
+              I dati sono trattati esclusivamente per rispondere alle tue richieste, gestire le comunicazioni,
+              organizzare l'attività di volontariato e fornire i servizi richiesti. Non utilizziamo i dati
               per finalità di marketing né li cediamo a terzi.
             </p>
           </div>
@@ -47,15 +48,15 @@ export default function PrivacyPolicy() {
           <div>
             <h2 className="text-xl font-bold text-mv-blue mb-3">Base giuridica</h2>
             <p className="text-gray-600 leading-relaxed">
-              Il trattamento si basa sul tuo consenso espresso al momento dell'invio dei dati tramite i moduli 
-              del sito, oppure sull'esecuzione di misure precontrattuali su tua richiesta.
+              Il trattamento si basa sul tuo consenso espresso al momento del contatto,
+              oppure sull'esecuzione di misure precontrattuali su tua richiesta.
             </p>
           </div>
 
           <div>
             <h2 className="text-xl font-bold text-mv-blue mb-3">Conservazione</h2>
             <p className="text-gray-600 leading-relaxed">
-              I dati sono conservati per il tempo necessario a soddisfare le finalità per cui sono stati raccolti, 
+              I dati sono conservati per il tempo necessario a soddisfare le finalità per cui sono stati raccolti,
               o fino alla tua eventuale richiesta di cancellazione.
             </p>
           </div>
@@ -63,7 +64,7 @@ export default function PrivacyPolicy() {
           <div>
             <h2 className="text-xl font-bold text-mv-blue mb-3">Diritti dell'interessato</h2>
             <p className="text-gray-600 leading-relaxed">
-              Hai diritto di accesso, retifica, cancellazione, limitazione del trattamento, opposizione e portabilità 
+              Hai diritto di accesso, rettifica, cancellazione, limitazione del trattamento, opposizione e portabilità
               dei dati. Per esercitare i tuoi diritti, scrivici a info@movimentovitaasiago.it.
             </p>
           </div>
@@ -71,7 +72,7 @@ export default function PrivacyPolicy() {
           <div>
             <h2 className="text-xl font-bold text-mv-blue mb-3">Sicurezza</h2>
             <p className="text-gray-600 leading-relaxed">
-              Adottiamo misure tecniche e organizzative adeguate a proteggere i dati personali da accessi non autorizzati, 
+              Adottiamo misure tecniche e organizzative adeguate a proteggere i dati personali da accessi non autorizzati,
               perdita o alterazione.
             </p>
           </div>

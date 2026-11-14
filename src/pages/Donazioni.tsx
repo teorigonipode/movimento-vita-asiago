@@ -1,13 +1,14 @@
-import { Heart, Banknote, ArrowRight, CheckCircle } from 'lucide-react';
+import { Heart, Banknote, ArrowRight, CheckCircle, Mail, Phone } from 'lucide-react';
 import SectionTitle from '../components/SectionTitle';
 import SEO from '../components/SEO';
+import { siteConfig } from '../config/site';
 
 export default function Donazioni() {
   return (
     <div>
       <SEO
         title="Donazioni"
-        description="Il tuo contributo ci permette di aiutare chi e in difficolta. Ogni donazione, grande o piccola, fa la differenza."
+        description="Il tuo contributo ci permette di aiutare chi è in difficoltà. Ogni donazione, grande o piccola, fa la differenza."
         path="/donazioni"
       />
       <section className="bg-mv-blue py-16 md:py-24">
@@ -28,12 +29,12 @@ export default function Donazioni() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
             {[
               { icon: Heart, title: 'Donazione libera', desc: 'Versa l\'importo che desideri. Ogni euro viene usato con trasparenza per aiutare chi ne ha bisogno.' },
-              { icon: Banknote, title: '5x1000', desc: 'Destina il tuo 5x1000 al Movimento per la Vita. Codice fiscale da inserire in fase di dichiarazione.' },
+              { icon: Banknote, title: '5x1000', desc: 'Destina il tuo 5x1000 al Movimento per la Vita. Contattaci per conoscere il codice fiscale da inserire in fase di dichiarazione.' },
               { icon: CheckCircle, title: 'Beni materiali', desc: 'Puoi donare alimentari, vestiti, prodotti per l\'infanzia e altri beni di prima necessità.' },
             ].map((item, i) => (
               <div key={i} className="p-8 rounded-2xl bg-mv-cream border border-mv-warm text-center hover:shadow-lg transition-shadow">
                 <div className="w-12 h-12 bg-mv-teal/10 rounded-xl flex items-center justify-center mx-auto mb-5">
-                  <item.icon className="w-6 h-6 text-mv-teal" />
+                  <item.icon className="w-6 h-6 text-mv-teal" aria-hidden="true" />
                 </div>
                 <h3 className="text-xl font-semibold text-mv-blue mb-3">{item.title}</h3>
                 <p className="text-gray-600 leading-relaxed">{item.desc}</p>
@@ -52,8 +53,7 @@ export default function Donazioni() {
                   <div>
                     <h3 className="font-semibold text-mv-blue">Bonifico bancario</h3>
                     <p className="text-gray-600 text-sm mt-1">
-                      IBAN: IT00 X 0000 0000 0000 0000 000<br />
-                      Intestato a: Movimento per la Vita Asiago
+                      Contattaci per conoscere le modalità aggiornate di donazione e l'IBAN dell'associazione.
                     </p>
                   </div>
                 </div>
@@ -65,6 +65,7 @@ export default function Donazioni() {
                     <h3 className="font-semibold text-mv-blue">5x1000</h3>
                     <p className="text-gray-600 text-sm mt-1">
                       Inserisci il nostro Codice Fiscale nella tua dichiarazione dei redditi.
+                      Contattaci per ricevere il codice corretto.
                     </p>
                   </div>
                 </div>
@@ -75,7 +76,7 @@ export default function Donazioni() {
                   <div>
                     <h3 className="font-semibold text-mv-blue">Beni materiali</h3>
                     <p className="text-gray-600 text-sm mt-1">
-                      Porta i tuoi doni presso la nostra sede in Via Roma 1, Asiago. Ti aspettiamo su appuntamento.
+                      Porta i tuoi doni presso la nostra sede in {siteConfig.address}. Ti aspettiamo su appuntamento.
                     </p>
                   </div>
                 </div>
@@ -85,30 +86,30 @@ export default function Donazioni() {
             <div className="bg-mv-blue rounded-2xl p-8 text-white">
               <h2 className="text-2xl font-bold mb-4">Trasparenza totale</h2>
               <p className="text-gray-300 leading-relaxed mb-6">
-                Rendicontiamo periodicamente le nostre attività e l'uso delle risorse. 
+                Rendicontiamo periodicamente le nostre attività e l'uso delle risorse.
                 Crediamo che la fiducia si costruisca con la trasparenza e la concretezza.
               </p>
               <ul className="space-y-3 text-gray-300 text-sm">
                 <li className="flex items-center gap-2">
-                  <CheckCircle className="w-4 h-4 text-mv-teal" />
-                  Bilancio annuale pubblicato
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle className="w-4 h-4 text-mv-teal" />
-                  Detrazioni fiscali per le donazioni
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle className="w-4 h-4 text-mv-teal" />
+                  <CheckCircle className="w-4 h-4 text-mv-teal" aria-hidden="true" />
                   Uso etico e responsabile dei fondi
                 </li>
               </ul>
-              <div className="mt-8">
+              <div className="mt-8 flex flex-col sm:flex-row gap-4">
                 <a
-                  href="mailto:info@movimentovitaasiago.it"
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-mv-teal text-white font-semibold rounded-lg hover:bg-mv-teal-light transition-colors"
+                  href={`mailto:${siteConfig.email}`}
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-mv-teal text-white font-semibold rounded-lg hover:bg-mv-teal-light transition-colors focus:outline-none focus:ring-2 focus:ring-mv-teal focus:ring-offset-2"
                 >
+                  <Mail className="w-4 h-4" aria-hidden="true" />
                   Contattaci per maggiori info
-                  <ArrowRight className="w-4 h-4" />
+                  <ArrowRight className="w-4 h-4" aria-hidden="true" />
+                </a>
+                <a
+                  href={siteConfig.phone.href}
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-white/10 text-white font-semibold rounded-lg hover:bg-white/20 transition-colors border border-white/20 focus:outline-none focus:ring-2 focus:ring-mv-teal focus:ring-offset-2"
+                >
+                  <Phone className="w-4 h-4" aria-hidden="true" />
+                  Chiama ora
                 </a>
               </div>
             </div>

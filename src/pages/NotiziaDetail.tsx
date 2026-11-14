@@ -1,8 +1,7 @@
-import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Calendar, ArrowLeft } from 'lucide-react';
 import SEO from '../components/SEO';
-import { supabase, getSupabaseError, type NewsPost } from '../lib/supabase';
+import { getNewsBySlug } from '../services/news';
 
 const categoryColors: Record<string, string> = {
   notizia: 'bg-blue-100 text-blue-800',
@@ -16,7 +15,7 @@ const categoryLabels: Record<string, string> = {
   comunicazione: 'Comunicazione',
 };
 
-function formatDate(dateStr: string | null): string {
+function formatDate(dateStr: string | undefined): string {
   if (!dateStr) return '';
   const date = new Date(dateStr);
   return date.toLocaleDateString('it-IT', {
@@ -28,64 +27,26 @@ function formatDate(dateStr: string | null): string {
 
 export default function NotiziaDetail() {
   const { slug } = useParams<{ slug: string }>();
-  const [post, setPost] = useState<NewsPost | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const configError = getSupabaseError();
+  const post = slug ? getNewsBySlug(slug) : null;
 
-  useEffect(() => {
-    fetchPost();
-  }, [slug]);
-
-  const fetchPost = async () => {
-    if (!supabase || !slug) return;
-    setLoading(true);
-    const { data, error: fetchError } = await supabase
-      .from('news_posts')
-      .select('*')
-      .eq('slug', slug)
-      .eq('status', 'published')
-      .single();
-
-    if (fetchError || !data) {
-      setError('Notizia non trovata.');
-    } else {
-      setPost(data);
-    }
-    setLoading(false);
-  };
-
-  if (configError) {
+  if (!post) {
     return (
-      <div className="min-h-screen bg-mv-cream">
-        <div className="max-w-4xl mx-auto px-4 py-16 text-center">
-          <p className="text-red-600">Errore di configurazione.</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-mv-cream flex items-center justify-center">
-        <p className="text-gray-500 text-lg">Caricamento...</p>
-      </div>
-    );
-  }
-
-  if (error || !post) {
-    return (
-      <div className="min-h-screen bg-mv-cream flex items-center justify-center px-4">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold text-mv-blue mb-4">Notizia non trovata</h1>
-          <p className="text-gray-600 mb-6">La notizia che stai cercando non esiste o non e piu disponibile.</p>
-          <Link
-            to="/notizie"
-            className="inline-flex items-center gap-2 text-mv-teal font-medium hover:text-mv-teal-light transition-colors"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            Torna alle notizie
-          </Link>
+      <div>
+        <SEO title="Notizia non trovata" description="La notizia cercata non è disponibile." path="/notizie" noIndex />
+        <div className="min-h-screen bg-mv-cream flex items-center justify-center px-4">
+          <div className="text-center">
+            <h1 className="text-2xl font-bold text-mv-blue mb-4">Notizia non trovata</h1>
+            <p className="text-gray-600 mb-6">
+              La notizia che stai cercando non esiste o non è più disponibile.
+            </p>
+            <Link
+              to="/notizie"
+              className="inline-flex items-center gap-2 text-mv-teal font-medium hover:text-mv-teal-light transition-colors"
+            >
+              <ArrowLeft className="w-4 h-4" aria-hidden="true" />
+              Torna alle notizie
+            </Link>
+          </div>
         </div>
       </div>
     );
@@ -96,14 +57,14 @@ export default function NotiziaDetail() {
       <SEO
         title={post.title}
         description={post.excerpt || post.content.substring(0, 160)}
-        image={post.cover_image_url || undefined}
+        image={post.coverImage || undefined}
         path={`/notizie/${post.slug}`}
       />
 
-      {post.cover_image_url && (
+      {post.coverImage && (
         <div className="relative h-64 md:h-80 lg:h-96 overflow-hidden">
           <img
-            src={post.cover_image_url}
+            src={post.coverImage}
             alt={post.title}
             className="w-full h-full object-cover"
           />
@@ -116,7 +77,7 @@ export default function NotiziaDetail() {
           to="/notizie"
           className="inline-flex items-center gap-2 text-mv-teal font-medium mb-6 hover:text-mv-teal-light transition-colors"
         >
-          <ArrowLeft className="w-4 h-4" />
+          <ArrowLeft className="w-4 h-4" aria-hidden="true" />
           Torna alle notizie
         </Link>
 
@@ -126,8 +87,8 @@ export default function NotiziaDetail() {
               {categoryLabels[post.category] || post.category}
             </span>
             <span className="text-sm text-gray-500 flex items-center gap-1.5">
-              <Calendar className="w-4 h-4" />
-              {formatDate(post.event_date || post.published_at)}
+              <Calendar className="w-4 h-4" aria-hidden="true" />
+              {formatDate(post.eventDate || post.publishedAt)}
             </span>
           </div>
           <h1 className="text-3xl md:text-4xl font-bold text-mv-blue leading-tight">

@@ -1,9 +1,7 @@
-import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Calendar, ArrowRight } from 'lucide-react';
 import SEO from '../components/SEO';
-import SupabaseError from '../components/SupabaseError';
-import { supabase, getSupabaseError, type NewsPost } from '../lib/supabase';
+import { getPublishedNews, type NewsPost } from '../services/news';
 
 const categoryColors: Record<string, string> = {
   notizia: 'bg-blue-100 text-blue-800',
@@ -17,7 +15,7 @@ const categoryLabels: Record<string, string> = {
   comunicazione: 'Comunicazione',
 };
 
-function formatDate(dateStr: string | null): string {
+function formatDate(dateStr: string | undefined): string {
   if (!dateStr) return '';
   const date = new Date(dateStr);
   return date.toLocaleDateString('it-IT', {
@@ -28,47 +26,7 @@ function formatDate(dateStr: string | null): string {
 }
 
 export default function Notizie() {
-  const [posts, setPosts] = useState<NewsPost[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const configError = getSupabaseError();
-
-  useEffect(() => {
-    fetchPosts();
-  }, []);
-
-  const fetchPosts = async () => {
-    if (!supabase) return;
-    setLoading(true);
-    const { data, error: fetchError } = await supabase
-      .from('news_posts')
-      .select('*')
-      .eq('status', 'published')
-      .order('published_at', { ascending: false });
-
-    if (fetchError) {
-      console.error('Error fetching posts:', fetchError);
-      setError('Non siamo riusciti a caricare le notizie.');
-    } else {
-      setPosts(data || []);
-    }
-    setLoading(false);
-  };
-
-  if (configError) {
-    return (
-      <div className="min-h-screen bg-mv-cream">
-        <SEO
-          title="Notizie ed eventi"
-          description="Notizie ed eventi del Movimento per la Vita Asiago."
-          path="/notizie"
-        />
-        <div className="max-w-4xl mx-auto px-4 py-16">
-          <SupabaseError />
-        </div>
-      </div>
-    );
-  }
+  const posts = getPublishedNews();
 
   return (
     <div>
@@ -89,15 +47,7 @@ export default function Notizie() {
 
       <section className="py-16 md:py-20 bg-mv-cream">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {loading ? (
-            <div className="text-center py-12">
-              <p className="text-gray-500 text-lg">Caricamento...</p>
-            </div>
-          ) : error ? (
-            <div className="text-center py-12">
-              <p className="text-red-600">{error}</p>
-            </div>
-          ) : posts.length === 0 ? (
+          {posts.length === 0 ? (
             <div className="text-center py-12 bg-white rounded-2xl border border-mv-warm">
               <p className="text-gray-600 text-lg max-w-md mx-auto px-4">
                 Al momento non ci sono notizie pubblicate. Torna a visitarci per rimanere aggiornato sulle prossime iniziative.
@@ -105,15 +55,15 @@ export default function Notizie() {
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {posts.map((post) => (
+              {posts.map((post: NewsPost) => (
                 <article
-                  key={post.id}
+                  key={post.slug}
                   className="bg-white rounded-2xl border border-mv-warm overflow-hidden hover:shadow-lg transition-shadow flex flex-col"
                 >
-                  {post.cover_image_url && (
+                  {post.coverImage && (
                     <div className="aspect-video overflow-hidden">
                       <img
-                        src={post.cover_image_url}
+                        src={post.coverImage}
                         alt={post.title}
                         className="w-full h-full object-cover"
                         loading="lazy"
@@ -126,8 +76,8 @@ export default function Notizie() {
                         {categoryLabels[post.category] || post.category}
                       </span>
                       <span className="text-xs text-gray-500 flex items-center gap-1">
-                        <Calendar className="w-3.5 h-3.5" />
-                        {formatDate(post.event_date || post.published_at)}
+                        <Calendar className="w-3.5 h-3.5" aria-hidden="true" />
+                        {formatDate(post.eventDate || post.publishedAt)}
                       </span>
                     </div>
                     <h2 className="text-xl font-semibold text-mv-blue mb-2 line-clamp-2">
@@ -142,8 +92,8 @@ export default function Notizie() {
                       to={`/notizie/${post.slug}`}
                       className="inline-flex items-center gap-1.5 text-mv-teal font-medium text-sm hover:text-mv-teal-light transition-colors"
                     >
-                      Leggi di piu
-                      <ArrowRight className="w-4 h-4" />
+                      Leggi di più
+                      <ArrowRight className="w-4 h-4" aria-hidden="true" />
                     </Link>
                   </div>
                 </article>

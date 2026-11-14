@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, Heart, Phone } from 'lucide-react';
+import { siteConfig } from '../config/site';
 
 const navLinks = [
   { to: '/', label: 'Home' },
@@ -54,7 +55,7 @@ export default function Navbar() {
 
           <div className="hidden lg:flex items-center gap-3">
             <a
-              href="tel:+39000000000"
+              href={siteConfig.phone.href}
               className="flex items-center gap-1.5 text-sm font-medium text-mv-teal hover:text-mv-teal-light transition-colors focus:outline-none focus:ring-2 focus:ring-mv-teal rounded-lg px-2 py-1"
               aria-label="Chiama per chiedere aiuto"
             >
@@ -104,7 +105,7 @@ export default function Navbar() {
             })}
             <div className="pt-3 border-t border-mv-warm space-y-2">
               <a
-                href="tel:+39000000000"
+                href={siteConfig.phone.href}
                 className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-mv-teal focus:outline-none focus:ring-2 focus:ring-mv-teal rounded-md"
                 aria-label="Chiama per chiedere aiuto"
               >

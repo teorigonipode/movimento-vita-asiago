@@ -2,13 +2,14 @@ import { Link } from 'react-router-dom';
 import { Heart, Phone, Users, Shield, MessageCircle, HandHeart, ArrowRight } from 'lucide-react';
 import SectionTitle from '../components/SectionTitle';
 import SEO from '../components/SEO';
+import { siteConfig } from '../config/site';
 
 export default function Home() {
   return (
     <div>
       <SEO
         title="Movimento per la Vita Asiago"
-        description="Ascolto, accoglienza e aiuto concreto per chi e in difficolta. Sede locale del Movimento per la Vita Italiano."
+        description="Ascolto, accoglienza e aiuto concreto per chi è in difficoltà. Sede locale del Movimento per la Vita Italiano."
         path="/"
       />
       {/* Hero */}
@@ -20,7 +21,7 @@ export default function Home() {
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28 lg:py-36">
           <div className="max-w-3xl">
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 rounded-full text-mv-gold text-sm font-medium mb-6">
-              <Heart className="w-4 h-4" />
+              <Heart className="w-4 h-4" aria-hidden="true" />
               Movimento per la Vita Asiago
             </div>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6">
@@ -28,22 +29,29 @@ export default function Home() {
               <span className="text-mv-teal-light">Siamo qui per ascoltarti e aiutarti.</span>
             </h1>
             <p className="text-lg md:text-xl text-gray-300 mb-10 max-w-2xl leading-relaxed">
-              Un gruppo di volontari pronti ad accoglierti con empatia e discrezione. 
+              Un gruppo di volontari pronti ad accoglierti con empatia e discrezione.
               Offriamo ascolto, supporto concreto e accompagnamento senza giudizio.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Link
                 to="/contatti"
-                className="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-mv-teal text-white font-semibold rounded-lg hover:bg-mv-teal-light transition-colors"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-mv-teal text-white font-semibold rounded-lg hover:bg-mv-teal-light transition-colors focus:outline-none focus:ring-2 focus:ring-mv-teal focus:ring-offset-2"
               >
-                <Phone className="w-5 h-5" />
+                <Phone className="w-5 h-5" aria-hidden="true" />
                 Chiedi aiuto
               </Link>
+              <a
+                href={siteConfig.phone.href}
+                className="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-white/10 text-white font-semibold rounded-lg hover:bg-white/20 transition-colors border border-white/20 focus:outline-none focus:ring-2 focus:ring-mv-teal focus:ring-offset-2"
+              >
+                <Phone className="w-5 h-5" aria-hidden="true" />
+                Chiama ora
+              </a>
               <Link
                 to="/volontari"
-                className="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-white/10 text-white font-semibold rounded-lg hover:bg-white/20 transition-colors border border-white/20"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-white/10 text-white font-semibold rounded-lg hover:bg-white/20 transition-colors border border-white/20 focus:outline-none focus:ring-2 focus:ring-mv-teal focus:ring-offset-2"
               >
-                <Users className="w-5 h-5" />
+                <Users className="w-5 h-5" aria-hidden="true" />
                 Diventa volontario
               </Link>
             </div>
@@ -61,7 +69,7 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="p-8 rounded-2xl bg-mv-cream border border-mv-warm hover:shadow-lg transition-shadow">
               <div className="w-12 h-12 bg-mv-teal/10 rounded-xl flex items-center justify-center mb-5">
-                <MessageCircle className="w-6 h-6 text-mv-teal" />
+                <MessageCircle className="w-6 h-6 text-mv-teal" aria-hidden="true" />
               </div>
               <h3 className="text-xl font-semibold text-mv-blue mb-3">Ascolto</h3>
               <p className="text-gray-600 leading-relaxed">
@@ -70,7 +78,7 @@ export default function Home() {
             </div>
             <div className="p-8 rounded-2xl bg-mv-cream border border-mv-warm hover:shadow-lg transition-shadow">
               <div className="w-12 h-12 bg-mv-teal/10 rounded-xl flex items-center justify-center mb-5">
-                <HandHeart className="w-6 h-6 text-mv-teal" />
+                <HandHeart className="w-6 h-6 text-mv-teal" aria-hidden="true" />
               </div>
               <h3 className="text-xl font-semibold text-mv-blue mb-3">Accoglienza</h3>
               <p className="text-gray-600 leading-relaxed">
@@ -79,7 +87,7 @@ export default function Home() {
             </div>
             <div className="p-8 rounded-2xl bg-mv-cream border border-mv-warm hover:shadow-lg transition-shadow">
               <div className="w-12 h-12 bg-mv-teal/10 rounded-xl flex items-center justify-center mb-5">
-                <Shield className="w-6 h-6 text-mv-teal" />
+                <Shield className="w-6 h-6 text-mv-teal" aria-hidden="true" />
               </div>
               <h3 className="text-xl font-semibold text-mv-blue mb-3">Riservatezza</h3>
               <p className="text-gray-600 leading-relaxed">
@@ -131,7 +139,7 @@ export default function Home() {
                 className="inline-flex items-center gap-2 text-mv-teal font-semibold hover:text-mv-teal-light transition-colors"
               >
                 Scopri tutti i servizi
-                <ArrowRight className="w-4 h-4" />
+                <ArrowRight className="w-4 h-4" aria-hidden="true" />
               </Link>
             </div>
             <div className="relative">
@@ -160,16 +168,16 @@ export default function Home() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               to="/contatti"
-              className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-mv-teal text-white font-semibold rounded-lg hover:bg-mv-teal-light transition-colors text-lg"
+              className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-mv-teal text-white font-semibold rounded-lg hover:bg-mv-teal-light transition-colors text-lg focus:outline-none focus:ring-2 focus:ring-mv-teal focus:ring-offset-2"
             >
-              <Phone className="w-5 h-5" />
+              <Phone className="w-5 h-5" aria-hidden="true" />
               Chiedi aiuto
             </Link>
             <a
-              href="tel:+39000000000"
-              className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white/10 text-white font-semibold rounded-lg hover:bg-white/20 transition-colors border border-white/20 text-lg"
+              href={siteConfig.phone.href}
+              className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white/10 text-white font-semibold rounded-lg hover:bg-white/20 transition-colors border border-white/20 text-lg focus:outline-none focus:ring-2 focus:ring-mv-teal focus:ring-offset-2"
             >
-              <Phone className="w-5 h-5" />
+              <Phone className="w-5 h-5" aria-hidden="true" />
               Chiama ora
             </a>
           </div>

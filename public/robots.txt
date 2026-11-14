@@ -4,7 +4,4 @@
 User-agent: *
 Allow: /
 
-Disallow: /admin
-Disallow: /admin/
-
 Sitemap: https://movimento-vita-asiago.vercel.app/sitemap.xml
