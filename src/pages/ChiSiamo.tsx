@@ -1,110 +1,15 @@
 import { Heart, Target, Users, Calendar, Award } from 'lucide-react';
 import SectionTitle from '../components/SectionTitle';
 import SEO from '../components/SEO';
+import { siteConfig } from '../config/site';
 
-const milestones = [
-  { year: '2024', title: 'Fondazione', desc: 'Nasce la sede locale di Asiago, collegata al Movimento per la Vita Italiano.' },
-  { year: '2024', title: 'Primi volontari', desc: 'Un gruppo di cittadini si unisce per offrire ascolto e aiuto concreto sul territorio.' },
-  { year: '2025', title: 'Espansione servizi', desc: 'Allargamento delle attività di supporto materiale e orientamento sociale.' },
+const principles = [
+  { icon: Heart, title: 'Ascolto', desc: 'Partiamo dalla persona e dalla sua storia, con attenzione e rispetto.' },
+  { icon: Target, title: 'Concretezza', desc: 'Cerchiamo insieme passi possibili e risorse utili nel territorio.' },
+  { icon: Users, title: 'Comunità', desc: 'La rete di volontari e realtà vicine rende l’aiuto più presente.' },
+  { icon: Award, title: 'Dignità', desc: 'Ogni incontro custodisce libertà, riservatezza e valore della persona.' },
 ];
 
 export default function ChiSiamo() {
-  return (
-    <div>
-      <SEO
-        title="Chi siamo"
-        description="La sede di Asiago del Movimento per la Vita Italiano: un gruppo di volontari uniti dalla volontà di aiutare chi e in difficolta."
-        path="/chi-siamo"
-      />
-      <section className="bg-mv-blue py-16 md:py-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">Chi siamo</h1>
-          <p className="text-lg text-gray-300 max-w-2xl mx-auto">
-            La sede di Asiago del Movimento per la Vita Italiano: un gruppo di volontari uniti dalla volontà di aiutare chi è in difficoltà.
-          </p>
-        </div>
-      </section>
-
-      <section className="py-16 md:py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div className="aspect-[4/3] rounded-2xl overflow-hidden bg-mv-blue/5">
-              <img
-                src="https://images.pexels.com/photos/6647118/pexels-photo-6647118.jpeg?auto=compress&cs=tinysrgb&w=800"
-                alt="Volontari al lavoro"
-                className="w-full h-full object-cover"
-                loading="lazy"
-              />
-            </div>
-            <div>
-              <h2 className="text-3xl font-bold text-mv-blue mb-6">La nostra storia</h2>
-              <p className="text-gray-600 leading-relaxed mb-4">
-                Il Movimento per la Vita Asiago è la sede locale del Movimento per la Vita Italiano, 
-                un'associazione che da decenni opera in tutta Italia per offrire ascolto, accoglienza 
-                e aiuto concreto a chi si trova in situazioni di difficoltà.
-              </p>
-              <p className="text-gray-600 leading-relaxed mb-4">
-                Siamo un gruppo di volontari che credono nel valore della persona e nella forza della 
-                comunità. Non giudichiamo, non imponiamo: ascoltiamo, accogliamo e aiutiamo secondo 
-                le reali necessità di chi bussa alla nostra porta.
-              </p>
-              <p className="text-gray-600 leading-relaxed">
-                La nostra sede di Asiago rappresenta un punto di riferimento per l'Altopiano e i 
-                comuni limitrofi, offrendo un servizio vicino, concreto e rispettoso della privacy.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="py-16 md:py-20 bg-mv-cream">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <SectionTitle
-            title="I nostri principi"
-            subtitle="Valori che guidano ogni nostra azione e decisione."
-          />
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              { icon: Heart, title: 'Rispetto della vita', desc: 'Ogni persona ha dignità intrinseca, indipendentemente dalle circostanze.' },
-              { icon: Target, title: 'Concretezza', desc: 'Offriamo aiuto reale: ascolto, beni materiali, orientamento ai servizi.' },
-              { icon: Users, title: 'Volontariato', desc: 'Il nostro impegno è gratuito, mosso dalla solidarietà e dalla compassione.' },
-              { icon: Award, title: 'Trasparenza', desc: 'Gestiamo le risorse con onestà e rendicontiamo le nostre attività.' },
-            ].map((item, i) => (
-              <div key={i} className="p-6 bg-white rounded-2xl border border-mv-warm hover:shadow-md transition-shadow">
-                <div className="w-10 h-10 bg-mv-teal/10 rounded-lg flex items-center justify-center mb-4">
-                  <item.icon className="w-5 h-5 text-mv-teal" />
-                </div>
-                <h3 className="font-semibold text-mv-blue mb-2">{item.title}</h3>
-                <p className="text-sm text-gray-600">{item.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="py-16 md:py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <SectionTitle
-            title="Cronologia"
-            subtitle="I passi fondamentali della nostra associazione."
-          />
-          <div className="max-w-3xl mx-auto">
-            <div className="relative border-l-2 border-mv-teal/30 ml-4 md:ml-6 space-y-10">
-              {milestones.map((m, i) => (
-                <div key={i} className="relative pl-8 md:pl-10">
-                  <div className="absolute -left-[9px] top-1 w-4 h-4 bg-mv-teal rounded-full border-4 border-white shadow-sm" />
-                  <div className="flex items-center gap-3 mb-1">
-                    <Calendar className="w-4 h-4 text-mv-teal" />
-                    <span className="text-sm font-semibold text-mv-teal">{m.year}</span>
-                  </div>
-                  <h3 className="text-lg font-semibold text-mv-blue">{m.title}</h3>
-                  <p className="text-gray-600 mt-1">{m.desc}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-    </div>
-  );
+  return <div><SEO title="Chi siamo" description="Il Centro Aiuto alla Vita del Movimento per la Vita per l'Altopiano dei Sette Comuni." path="/chi-siamo" /><section className="bg-mv-blue py-16 md:py-24"><div className="max-w-4xl mx-auto px-4 text-center"><p className="text-mv-teal-light font-semibold uppercase tracking-wide text-sm mb-4">La nostra identità</p><h1 className="text-4xl md:text-5xl font-bold text-white mb-5">Chi siamo</h1><p className="text-lg text-white/80 leading-relaxed">Centro Aiuto alla Vita, Movimento per la Vita, Altopiano dei Sette Comuni.</p></div></section><section className="py-16 md:py-24 bg-white"><div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-12 items-center"><div className="rounded-3xl bg-mv-cream border border-mv-warm p-8 md:p-12"><img src={siteConfig.brandLogo} alt={siteConfig.name} className="w-full h-auto" /></div><div><p className="text-mv-teal font-semibold uppercase tracking-wide text-sm mb-3">Un presidio di ascolto</p><h2 className="text-3xl font-bold text-mv-blue mb-5">Vicini alle donne, alle mamme e alle famiglie</h2><p className="text-gray-600 leading-relaxed mb-4">Siamo una realtà del Movimento per la Vita dedicata all’Altopiano dei Sette Comuni. Offriamo un primo ascolto e orientamento a chi vive una gravidanza difficile, una maternità inattesa o un momento di particolare fragilità.</p><p className="text-gray-600 leading-relaxed">La nostra presenza vuole essere semplice e concreta: una persona da incontrare, una voce da ascoltare, una rete da attivare.</p></div></div></section><section className="py-16 md:py-24 bg-mv-cream"><div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"><SectionTitle title="La nostra missione" subtitle="Ascoltare, accogliere, accompagnare e sostenere ogni persona con rispetto." /><div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">{principles.map((item) => <div key={item.title} className="bg-white rounded-2xl border border-mv-warm p-7"><item.icon className="w-8 h-8 text-mv-teal mb-5" aria-hidden="true" /><h3 className="font-semibold text-mv-blue text-lg mb-3">{item.title}</h3><p className="text-gray-600 leading-relaxed">{item.desc}</p></div>)}</div></div></section><section className="py-16 md:py-24 bg-white"><div className="max-w-3xl mx-auto px-4 text-center"><Calendar className="w-10 h-10 text-mv-teal mx-auto mb-5" aria-hidden="true" /><h2 className="text-3xl font-bold text-mv-blue mb-4">Una presenza locale</h2><p className="text-gray-600 leading-relaxed">Ci trovi presso il Centro Giovanile di Asiago negli orari indicati. Per essere certi di incontrarci, ti consigliamo di chiamare o scrivere prima.</p></div></section></div>;
 }

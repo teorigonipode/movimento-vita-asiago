@@ -1,17 +1,22 @@
 export const siteConfig = {
-  name: 'Movimento per la Vita Asiago',
-  shortName: 'Movimento per la Vita',
-  locality: 'Asiago',
+  name: 'Centro Aiuto alla Vita – Altopiano dei Sette Comuni',
+  shortName: 'Centro Aiuto alla Vita',
+  locality: 'Altopiano dei Sette Comuni',
   description:
-    'Ascolto, accoglienza e aiuto concreto per chi è in difficoltà. Sede locale del Movimento per la Vita Italiano.',
+    'Centro Aiuto alla Vita dell’Altopiano dei Sette Comuni: ascolto, accoglienza e sostegno concreto per donne, mamme e famiglie in difficoltà.',
   phone: {
-    display: '+39 000 000 000',
-    href: 'tel:+39000000000',
+    display: '0424 1954228',
+    href: 'tel:+3904241954228',
   },
-  email: 'info@movimentovitaasiago.it',
-  address: 'Via Roma 1, 36012 Asiago (VI)',
+  email: 'cavmpvaltopiano7comuni@gmail.com',
+  locationName: 'Presso il Centro Giovanile di Asiago',
+  openingHours: [
+    { day: 'Mercoledì', hours: '14:00 – 15:30' },
+    { day: 'Venerdì', hours: '09:30 – 11:00' },
+  ],
   publicSiteUrl: import.meta.env.VITE_PUBLIC_SITE_URL || 'https://movimento-vita-asiago.vercel.app',
   volunteerMailtoSubject: 'Disponibilità come volontario',
+  brandLogo: '/brand/logo-cav-mpv-altopiano.png',
 };
 
 export function volunteerMailtoHref(): string {

@@ -1,103 +1,21 @@
-import { Phone, Package, MapPin, Baby, HeartHandshake, Clock, ShieldCheck } from 'lucide-react';
-import SectionTitle from '../components/SectionTitle';
+import { Baby, HeartHandshake, LifeBuoy, MapPin, Phone, ShieldCheck } from 'lucide-react';
 import SEO from '../components/SEO';
+import { siteConfig } from '../config/site';
 
-const services = [
-  {
-    icon: Phone,
-    title: 'Ascolto telefonico e in presenza',
-    desc: 'Una linea attiva per chi ha bisogno di parlare. L\'ascolto è anonimo, gratuito e senza giudizio. Possiamo anche incontrarci di persona, su appuntamento, nel pieno rispetto della riservatezza.',
-    color: 'bg-blue-50',
-    iconColor: 'text-blue-600',
-  },
-  {
-    icon: Package,
-    title: 'Supporto materiale',
-    desc: 'Distribuiamo pacchi alimentari, vestiti, prodotti per l\'infanzia e beni di prima necessità a chi si trova in difficoltà economica. Tutto in modo discreto e dignitoso.',
-    color: 'bg-green-50',
-    iconColor: 'text-green-600',
-  },
-  {
-    icon: MapPin,
-    title: 'Orientamento ai servizi',
-    desc: 'Ti aiutiamo a navigare il sistema dei servizi sociali, sanitari e legali del territorio. Ti indirizziamo verso le strutture più adeguate alle tue esigenze.',
-    color: 'bg-amber-50',
-    iconColor: 'text-amber-600',
-  },
-  {
-    icon: Baby,
-    title: 'Accompagnamento in gravidanza',
-    desc: 'Sostegno emotivo e pratico per le donne che affrontano una gravidanza difficile o inaspettata. Non sei sola: siamo al tuo fianco in ogni fase.',
-    color: 'bg-rose-50',
-    iconColor: 'text-rose-600',
-  },
-  {
-    icon: HeartHandshake,
-    title: 'Rete di solidarietà',
-    desc: 'Collaboriamo con parrocchie, enti locali e altre associazioni per costruire una rete di aiuto efficace e capillare sull\'Altopiano di Asiago.',
-    color: 'bg-teal-50',
-    iconColor: 'text-teal-600',
-  },
-  {
-    icon: Clock,
-    title: 'Disponibilità continuativa',
-    desc: 'I nostri volontari si impegnano a garantire una presenza costante, con turni organizzati per rispondere alle richieste nel minor tempo possibile.',
-    color: 'bg-indigo-50',
-    iconColor: 'text-indigo-600',
-  },
+const localServices = [
+  { icon: HeartHandshake, title: 'Ascolto', text: 'Un colloquio per raccontare ciò che stai vivendo e capire insieme da dove partire.' },
+  { icon: Baby, title: 'Sostegno alla maternità', text: 'Vicini a chi affronta una gravidanza difficile o inattesa, con attenzione alla situazione personale.' },
+  { icon: MapPin, title: 'Orientamento', text: 'Informazioni per individuare servizi e risorse adeguati, anche in collaborazione con la rete del territorio.' },
+  { icon: LifeBuoy, title: 'Aiuto concreto', text: 'Valutiamo con te quali forme di supporto possono essere utili e realisticamente disponibili.' },
+];
+
+const nationalResources = [
+  { title: 'SOS Vita', text: 'Servizio nazionale di ascolto e supporto, disponibile anche online.', href: 'https://sosvita.it' },
+  { title: 'Parto in anonimato', text: 'Informazioni ufficiali su una possibilità prevista dalla legge.', href: 'https://www.mpv.org/quando-una-culla-diventa-speranza' },
+  { title: 'Culle per la Vita', text: 'Elenco di strutture e informazioni sulla rete esterna.', href: 'https://www.culleperlavita.it/dove_sono.php' },
+  { title: 'Progetto Gemma', text: 'Un progetto nazionale di sostegno a distanza per mamme in difficoltà.', href: 'https://www.mpv.org/progettualita' },
 ];
 
 export default function ComePossiamoAiutarti() {
-  return (
-    <div>
-      <SEO
-        title="Come possiamo aiutarti"
-        description="I nostri servizi sono gratuiti, riservati e accessibili a tutti. Ascolto, supporto materiale e orientamento ai servizi."
-        path="/come-possiamo-aiutarti"
-      />
-      <section className="bg-mv-blue py-16 md:py-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">Come possiamo aiutarti</h1>
-          <p className="text-lg text-gray-300 max-w-2xl mx-auto">
-            I nostri servizi sono gratuiti, riservati e accessibili a tutti. Nessuna distinzione, nessun giudizio.
-          </p>
-        </div>
-      </section>
-
-      <section className="py-16 md:py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <SectionTitle
-            title="I nostri servizi"
-            subtitle="Scopri tutto ciò che possiamo fare per te o per chi conosci che ha bisogno di aiuto."
-          />
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {services.map((s, i) => (
-              <div key={i} className="p-8 rounded-2xl border border-mv-warm hover:shadow-lg transition-all bg-white">
-                <div className={`w-12 h-12 ${s.color} rounded-xl flex items-center justify-center mb-5`}>
-                  <s.icon className={`w-6 h-6 ${s.iconColor}`} />
-                </div>
-                <h3 className="text-xl font-semibold text-mv-blue mb-3">{s.title}</h3>
-                <p className="text-gray-600 leading-relaxed">{s.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="py-16 md:py-20 bg-mv-cream">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-mv-blue rounded-2xl p-8 md:p-12 text-center">
-            <ShieldCheck className="w-12 h-12 text-mv-teal mx-auto mb-6" />
-            <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">La tua privacy è garantita</h2>
-            <p className="text-gray-300 max-w-2xl mx-auto leading-relaxed">
-              Tutti i dati personali e le informazioni condivise con i nostri volontari sono trattate 
-              con la massima riservatezza. Non raccogliamo dati senza consenso e non condividiamo 
-              mai informazioni con terzi. La tua dignità e il tuo diritto alla privacy sono per noi 
-              assolutamente prioritari.
-            </p>
-          </div>
-        </div>
-      </section>
-    </div>
-  );
+  return <div><SEO title="Come possiamo aiutarti" description="Ascolto, accoglienza e orientamento per gravidanza e maternità nell'Altopiano dei Sette Comuni." path="/come-possiamo-aiutarti" /><section className="bg-mv-blue py-16 md:py-24"><div className="max-w-4xl mx-auto px-4 text-center"><p className="text-mv-teal-light font-semibold uppercase tracking-wide text-sm mb-4">Un aiuto su misura</p><h1 className="text-4xl md:text-5xl font-bold text-white mb-5">Come possiamo aiutarti</h1><p className="text-lg text-white/80 max-w-2xl mx-auto leading-relaxed">Siamo disponibili ad ascoltarti e a cercare insieme le risorse più adatte alla tua situazione.</p></div></section><section className="py-16 md:py-24 bg-white"><div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"><div className="max-w-2xl mb-10"><p className="text-mv-teal font-semibold uppercase tracking-wide text-sm mb-3">Servizi locali</p><h2 className="text-3xl font-bold text-mv-blue mb-4">Un primo contatto può fare la differenza</h2><p className="text-gray-600 leading-relaxed">Le attività vengono definite a partire dalle necessità della persona. Non offriamo soluzioni uguali per tutti: ascoltiamo, orientiamo e accompagniamo.</p></div><div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">{localServices.map((item) => <article key={item.title} className="rounded-2xl border border-mv-warm p-7 hover:shadow-lg transition-shadow"><item.icon className="w-8 h-8 text-mv-teal mb-5" aria-hidden="true" /><h3 className="text-xl font-semibold text-mv-blue mb-3">{item.title}</h3><p className="text-gray-600 leading-relaxed">{item.text}</p></article>)}</div></div></section><section className="py-16 md:py-24 bg-mv-cream"><div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"><div className="max-w-2xl mb-10"><p className="text-mv-teal font-semibold uppercase tracking-wide text-sm mb-3">Risorse nazionali ed esterne</p><h2 className="text-3xl font-bold text-mv-blue mb-4">Informazioni utili, anche oltre il territorio</h2><p className="text-gray-600 leading-relaxed">Questi servizi non sono gestiti direttamente dal Centro locale. Sono risorse esterne che possono offrire informazioni o supporto specifico.</p></div><div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">{nationalResources.map((item) => <article key={item.title} className="bg-white rounded-2xl border border-mv-warm p-7"><h3 className="text-xl font-semibold text-mv-blue mb-3">{item.title}</h3><p className="text-gray-600 leading-relaxed mb-5">{item.text}</p><a href={item.href} target="_blank" rel="noreferrer" className="text-sm font-semibold text-mv-teal hover:text-mv-blue">Approfondisci <span aria-hidden="true">→</span></a></article>)}</div></div></section><section className="py-16 bg-mv-blue"><div className="max-w-3xl mx-auto px-4 text-center"><ShieldCheck className="w-10 h-10 text-mv-teal-light mx-auto mb-5" aria-hidden="true" /><h2 className="text-3xl font-bold text-white mb-4">Parliamone con discrezione</h2><p className="text-white/80 mb-8">Puoi chiamarci al {siteConfig.phone.display} o scriverci direttamente.</p><div className="flex flex-col sm:flex-row justify-center gap-3"><a href={siteConfig.phone.href} className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-mv-teal text-white font-semibold rounded-lg hover:bg-mv-teal-light"><Phone className="w-5 h-5" aria-hidden="true" />Chiamaci</a><a href={`mailto:${siteConfig.email}`} className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white text-mv-blue font-semibold rounded-lg hover:bg-mv-cream">Scrivici</a></div></div></section></div>;
 }

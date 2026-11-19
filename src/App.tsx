@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout';
 import Home from './pages/Home';
+import NonSeiSola from './pages/NonSeiSola';
 import ChiSiamo from './pages/ChiSiamo';
 import ComePossiamoAiutarti from './pages/ComePossiamoAiutarti';
 import Volontari from './pages/Volontari';
@@ -19,6 +20,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/chi-siamo" element={<ChiSiamo />} />
           <Route path="/come-possiamo-aiutarti" element={<ComePossiamoAiutarti />} />
+          <Route path="/non-sei-sola" element={<NonSeiSola />} />
           <Route path="/donazioni" element={<Donazioni />} />
           <Route path="/volontari" element={<Volontari />} />
           <Route path="/notizie" element={<Notizie />} />

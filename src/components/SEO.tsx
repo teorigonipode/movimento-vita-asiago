@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { siteConfig } from '../config/site';
 
 interface SEOProps {
   title: string;
@@ -8,13 +9,11 @@ interface SEOProps {
   noIndex?: boolean;
 }
 
-const DEFAULT_IMAGE = 'https://images.pexels.com/photos/6646918/pexels-photo-6646918.jpeg?auto=compress&cs=tinysrgb&w=1200';
-const SITE_NAME = 'Movimento per la Vita Asiago';
-const SITE_URL = import.meta.env.VITE_PUBLIC_SITE_URL || '';
+const DEFAULT_IMAGE = `${siteConfig.publicSiteUrl}${siteConfig.brandLogo}`;
 
 export default function SEO({ title, description, image = DEFAULT_IMAGE, path, noIndex = false }: SEOProps) {
-  const fullTitle = title === SITE_NAME ? title : `${title} | ${SITE_NAME}`;
-  const canonicalUrl = path && SITE_URL ? `${SITE_URL}${path}` : '';
+  const fullTitle = title === siteConfig.name ? title : `${title} | ${siteConfig.shortName}`;
+  const canonicalUrl = path ? `${siteConfig.publicSiteUrl}${path}` : '';
 
   useEffect(() => {
     document.title = fullTitle;
@@ -42,15 +41,14 @@ export default function SEO({ title, description, image = DEFAULT_IMAGE, path, n
     };
 
     const removeLink = (rel: string) => {
-      const el = document.querySelector(`link[rel="${rel}"]`);
-      if (el) el.remove();
+      document.querySelector(`link[rel="${rel}"]`)?.remove();
     };
 
     setMeta('description', description);
     setMeta('og:title', fullTitle, true);
     setMeta('og:description', description, true);
     setMeta('og:image', image, true);
-    setMeta('og:site_name', SITE_NAME, true);
+    setMeta('og:site_name', siteConfig.name, true);
     setMeta('twitter:card', 'summary_large_image');
     setMeta('twitter:title', fullTitle);
     setMeta('twitter:description', description);
@@ -60,8 +58,7 @@ export default function SEO({ title, description, image = DEFAULT_IMAGE, path, n
       setMeta('robots', 'noindex, nofollow');
       removeLink('canonical');
     } else {
-      const robotsMeta = document.querySelector('meta[name="robots"]');
-      if (robotsMeta) robotsMeta.remove();
+      document.querySelector('meta[name="robots"]')?.remove();
       if (canonicalUrl) {
         setLink('canonical', canonicalUrl);
         setMeta('og:url', canonicalUrl, true);
