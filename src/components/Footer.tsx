@@ -6,7 +6,7 @@ export default function Footer() {
   return (
     <footer className="bg-mv-blue text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 lg:py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[1.25fr_0.75fr_1.4fr_0.9fr] gap-10">
           <div>
             <Link to="/" className="inline-block bg-white rounded-xl p-3 mb-5 focus:outline-none focus:ring-2 focus:ring-mv-teal focus:ring-offset-2 focus:ring-offset-mv-blue">
               <img src={siteConfig.brandLogo} alt={siteConfig.name} className="w-56 h-auto" />
@@ -31,7 +31,7 @@ export default function Footer() {
             <ul className="space-y-3 text-sm text-white/80">
               <li className="flex items-start gap-2"><MapPin className="w-4 h-4 mt-0.5 text-mv-teal-light shrink-0" aria-hidden="true" /><span>{siteConfig.locationName}</span></li>
               <li className="flex items-center gap-2"><Phone className="w-4 h-4 text-mv-teal-light shrink-0" aria-hidden="true" /><a href={siteConfig.phone.href} className="hover:text-white transition-colors">{siteConfig.phone.display}</a></li>
-              <li className="flex items-start gap-2"><Mail className="w-4 h-4 mt-0.5 text-mv-teal-light shrink-0" aria-hidden="true" /><a href={`mailto:${siteConfig.email}`} className="hover:text-white transition-colors break-all">{siteConfig.email}</a></li>
+              <li className="flex items-start gap-2"><Mail className="w-4 h-4 mt-0.5 text-mv-teal-light shrink-0" aria-hidden="true" /><a href={`mailto:${siteConfig.email}`} className="hover:text-white transition-colors break-words">{siteConfig.email}</a></li>
             </ul>
           </div>
 

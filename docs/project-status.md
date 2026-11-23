@@ -1,84 +1,14 @@
-# Project status — Movimento per la Vita Asiago
+# Project status — Centro Aiuto alla Vita Altopiano dei Sette Comuni
 
-Updated: 2026-11-13
+Updated: 2026-11-23
 
 ## Repository
 
 - Repository: `teorigonipode/movimento-vita-asiago`
 - Branch: `main`
-- Last audited HEAD before cleanup: `ca0de98aa5e233a366bac3c9ae660ff470bac368`
-- HEAD after cleanup: post-cleanup commit (see git log)
+- Expected current HEAD at start of this pass: `fb40d96f2d2ba7d0753278afd3f8b297f730084e`
 - Production hosting: Vercel
-- Current temporary production URL: `https://movimento-vita-asiago.vercel.app`
-
-## Cleanup history
-
-### Before cleanup (legacy state)
-
-The repository contained a full Supabase backend:
-- `@supabase/supabase-js` dependency
-- `src/lib/supabase.ts` client
-- `src/contexts/AuthContext.tsx` Supabase Auth
-- `src/components/ProtectedRoute.tsx`
-- `src/components/SupabaseError.tsx`
-- public contact form → `contact_messages` table
-- volunteer form → `volunteer_requests` table
-- news → `news_posts` table with network fetch
-- Supabase Auth admin area (7 admin pages)
-- `supabase/migrations/` directory
-- duplicate `src/migrations/` directory
-- `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` env variables
-
-### After cleanup (current state)
-
-**Supabase removed:**
-- `@supabase/supabase-js` removed from package.json
-- No Supabase runtime imports
-- No Supabase env variables
-- All migration directories deleted
-- `src/lib/supabase.ts`, `src/contexts/AuthContext.tsx`, `src/components/ProtectedRoute.tsx`, `src/components/SupabaseError.tsx` deleted
-
-**Admin area removed:**
-- All `/admin/*` routes removed from routing
-- All admin page components deleted
-- No authentication system in the project
-
-**Forms removed:**
-- Contact form replaced with direct phone/email CTAs
-- Volunteer form replaced with direct phone/email CTAs
-- No data collection, no database storage
-
-**News made static:**
-- `src/content/news.ts` — static content source (empty, ready for real content)
-- `src/services/news.ts` — service layer (future replacement point)
-- `src/pages/Notizie.tsx` — uses service, no network requests
-- `src/pages/NotiziaDetail.tsx` — uses service, no network requests
-
-**Centralized config:**
-- `src/config/site.ts` — single source for site name, phone, email, address
-- Navbar, Footer, Home, Contatti, Volontari, Donazioni all use centralized config
-
-**Dangerous placeholders secured:**
-- Fake IBAN removed from Donazioni page — replaced with "Contattaci per conoscere le modalità aggiornate di donazione"
-- Fake 5x1000 tax code removed — replaced with "Contattaci per ricevere il codice corretto"
-- "Bilancio annuale pubblicato" and "Detrazioni fiscali" claims removed (unverified)
-- Phone `+39 000 000 000` remains as placeholder (marked as needing verification)
-- Email `info@movimentovitaasiago.it` remains (needs verification before domain exists)
-- CF/PIVA shown as "da verificare" in Footer
-
-**Documentation added:**
-- `docs/legacy-supabase.md` — historical summary of removed Supabase backend
-- `docs/backend-roadmap.md` — when and how a backend may return
-- `docs/domain-and-seo.md` — domain configuration roadmap
-- `docs/project-status.md` — this document, updated
-
-**SEO maintained:**
-- `SEO.tsx` component unchanged (dynamic canonical, OG, Twitter Card)
-- `robots.txt` updated — removed `/admin` disallow
-- `sitemap.xml` unchanged — already correct with public routes
-- `VITE_PUBLIC_SITE_URL` remains the single source for canonical URLs
-
-**Vercel Analytics:** confirmed active in `src/main.tsx`, retained.
+- Temporary production URL: `https://movimento-vita-asiago.vercel.app`
 
 ## Current architecture
 
@@ -86,58 +16,34 @@ The repository contained a full Supabase backend:
 GitHub → Vercel → future custom domain
 ```
 
-- React 18 + TypeScript + Vite + Tailwind CSS
-- React Router DOM v7
-- Vercel Analytics
-- Vercel hosting
-- No backend, no database, no authentication
-- News as static content versioned on Git
+The runtime is a static React/Vite site. It has no Supabase, database, authentication, admin area, backend, serverless functions or Bolt runtime dependency. News and testimonials are versioned in the repository; contact actions use `tel:` and `mailto:` links.
 
-## Portability
+## Current branding
 
-The site is fully portable:
-- `git clone` → `npm install` → `npm run build` is sufficient
-- No Bolt runtime dependency
-- No Supabase dependency
-- No external backend required
-- PORTABILITY CHECK: PASS
+- Brand: **Centro Aiuto alla Vita – Altopiano dei Sette Comuni**
+- Official logo: `public/brand/logo-cav-mpv-altopiano.png`
+- The logo is used in the navbar, footer and Chi siamo page without distortion.
+- Favicon assets use only the green central symbol extracted from the supplied official raster logo.
+- Favicon files: `public/favicon.ico`, `public/favicon-16x16.png`, `public/favicon-32x32.png`, `public/favicon-192x192.png`, `public/favicon-512x512.png`, `public/apple-touch-icon.png`.
 
-## Placeholder report
+## Official contact data
 
-| Dato | Valore attuale | Stato | File | Azione |
-|------|---------------|-------|------|--------|
-| Telefono | +39 000 000 000 | PLACEHOLDER | `src/config/site.ts` | Verificare numero reale |
-| Email | info@movimentovitaasiago.it | DA VERIFICARE | `src/config/site.ts` | Verificare dominio/ email reale |
-| Indirizzo | Via Roma 1, 36012 Asiago (VI) | DA VERIFICARE | `src/config/site.ts` | Verificare indirizzo reale |
-| IBAN | Non mostrato | NASCOSTO | — | Fornire IBAN reale quando disponibile |
-| CF / P.IVA | "da verificare" | PLACEHOLDER | `src/components/Footer.tsx` | Fornire valore reale |
-| 5x1000 | Non mostrato | NASCOSTO | — | Fornire codice fiscale quando disponibile |
-| Bilancio annuale | Non affermato | RIMOSSO | — | Verificare prima di reintrodurre |
-| Detrazioni fiscali | Non affermato | RIMOSSO | — | Verificare prima di reintrodurre |
+- Phone: `0424 1954228` — `tel:+3904241954228`
+- Email: `cavmpvaltopiano7comuni@gmail.com`
+- Location: `Presso il Centro Giovanile di Asiago`
+- Wednesday: `14:00 – 15:30`
+- Friday: `09:30 – 11:00`
 
-## Legal review
+All runtime components read these values from `src/config/site.ts`.
 
-LEGAL REVIEW NEEDED:
-- Privacy Policy: verificare con referente associativo che i dati raccolti via telefono/email siano coperti correttamente
-- Cookie Policy: Vercel Analytics è citato come attivo — confermare che la descrizione è accurata
-- Affermazioni su riservatezza ("non condividiamo mai informazioni con terzi") — confermare con referente associativo
+## Routes
 
-## Route eliminate
-
-- `/admin`
-- `/admin/dashboard`
-- `/admin/requests/:id`
-- `/admin/volunteers`
-- `/admin/volunteers/:id`
-- `/admin/news`
-- `/admin/news/new`
-- `/admin/news/:id/edit`
-
-## Route mantenute
+Public routes:
 
 - `/`
 - `/chi-siamo`
 - `/come-possiamo-aiutarti`
+- `/non-sei-sola`
 - `/donazioni`
 - `/volontari`
 - `/notizie`
@@ -146,36 +52,46 @@ LEGAL REVIEW NEEDED:
 - `/privacy-policy`
 - `/cookie-policy`
 
-## Dipendenze
+There are no `/admin` routes.
 
-### Rimosse
-- `@supabase/supabase-js`
+## This final polish pass
 
-### Attuali
-- `react`, `react-dom` — 18.x
-- `react-router-dom` — 7.x
-- `lucide-react` — 0.x
-- `@vercel/analytics` — 2.x
-- Dev: `vite`, `typescript`, `tailwindcss`, `eslint`, `typescript-eslint`
+- Contact cards now use a two-column desktop layout so the long email remains readable and clickable.
+- Footer contact column has additional width and no aggressive `break-all` wrapping.
+- Removed all `py-18` classes in favour of standard Tailwind spacing.
+- Updated the Ministry of Health link for parto in anonimato.
+- Updated the Culle per la Vita link to `/dove-sono/`.
+- External links use `target="_blank"` with `rel="noopener noreferrer"`.
+- Added `/non-sei-sola` to `public/sitemap.xml`.
+- Open Graph and Twitter default images in `index.html` use absolute Vercel URLs.
+- Removed the unused duplicate source logo asset.
 
-Nessun major upgrade eseguito. Patch/minor applicati via `npm install`.
+## Content status
 
-## Debito tecnico residuo
+- News array is empty until verified local news are supplied.
+- Testimonials array is empty; no testimonials are invented or copied.
+- Donation page does not show an IBAN, tax code, P.IVA or 5x1000 code until verified.
+- No local Culla per la Vita, SOS Vita, Progetto Gemma or other external resource is presented as locally managed.
 
-- Dati di contatto (telefono, email, indirizzo) sono placeholder da verificare
-- IBAN e codice fiscale 5x1000 non disponibili — pagine mostrano CTA di contatto
-- CF/PIVA non disponibile — Footer mostra "da verificare"
-- Notizie: array vuoto, nessun contenuto reale ancora pubblicato
-- Privacy/Cookie policy richiedono validazione legale/associativa
+## Data still needed from the client
 
-## Prossimi passi consigliati
+- Exact civic address, if it should be published in addition to the Centro Giovanile location.
+- Verified IBAN.
+- CF/P.IVA and 5x1000 code.
+- RUNTS information, if it should be published.
+- Official Facebook and Instagram URLs.
+- Authorized local photographs.
+- Real testimonials and first news/events.
+- Transparency documents.
 
-1. Fornire numero di telefono reale
-2. Verificare/creare email associativa reale
-3. Verificare indirizzo sede reale
-4. Fornire IBAN per donazioni
-5. Fornire CF/PIVA
-6. Fornire codice fiscale per 5x1000
-7. Validare Privacy Policy e Cookie Policy con referente legale
-8. Pubblicare prime notizie reali in `src/content/news.ts`
-9. Acquisire dominio definitivo e seguire `docs/domain-and-seo.md`
+## SEO and portability
+
+- `VITE_PUBLIC_SITE_URL` remains the canonical base URL.
+- `public/robots.txt` allows public indexing and points to the current sitemap.
+- `public/sitemap.xml` contains public routes only.
+- PORTABILITY CHECK: PASS — `npm install` and `npm run build` require no backend configuration.
+- Legal review remains needed for Privacy Policy, Cookie Policy, analytics wording and any future claims about confidentiality or donations.
+
+## Legacy
+
+Supabase cleanup history is documented in `docs/legacy-supabase.md`. Backend criteria are in `docs/backend-roadmap.md`; domain steps are in `docs/domain-and-seo.md`.
