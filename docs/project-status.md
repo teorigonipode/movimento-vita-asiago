@@ -1,12 +1,12 @@
 # Project status — Centro Aiuto alla Vita Altopiano dei Sette Comuni
 
-Updated: 2026-11-23
+Updated: 2026-11-24
 
 ## Repository
 
 - Repository: `teorigonipode/movimento-vita-asiago`
 - Branch: `main`
-- Expected current HEAD at start of this pass: `fb40d96f2d2ba7d0753278afd3f8b297f730084e`
+- Expected current HEAD at start of this pass: `30e5721b1c88e472478ea2f6bd9a4541083b38ee`
 - Production hosting: Vercel
 - Temporary production URL: `https://movimento-vita-asiago.vercel.app`
 
@@ -54,17 +54,23 @@ Public routes:
 
 There are no `/admin` routes.
 
-## This final polish pass
+## Final QA pass (2026-11-24)
 
-- Contact cards now use a two-column desktop layout so the long email remains readable and clickable.
-- Footer contact column has additional width and no aggressive `break-all` wrapping.
-- Removed all `py-18` classes in favour of standard Tailwind spacing.
-- Updated the Ministry of Health link for parto in anonimato.
-- Updated the Culle per la Vita link to `/dove-sono/`.
-- External links use `target="_blank"` with `rel="noopener noreferrer"`.
-- Added `/non-sei-sola` to `public/sitemap.xml`.
-- Open Graph and Twitter default images in `index.html` use absolute Vercel URLs.
-- Removed the unused duplicate source logo asset.
+- Fixed "Parto in anonimato" resource label: was "Approfondisci sul sito MPV" (incorrect, link points to Ministero Salute), changed to "Informazioni ufficiali".
+- Resource cards on Home and Come Possiamo Aiutarti now use `flex flex-col` with `mt-auto` on CTA for aligned bottom links.
+- Privacy Policy: removed internal TODO/review notes ("base giuridica e tempi di conservazione devono essere verificati", "richiede validazione legale") from the public page. Kept only verified information.
+- Cookie Policy: corrected Vercel Analytics description — it is a first-party privacy-friendly system that does not use cookies to identify visitors. Removed incorrect claim about "cookie di analisi tramite Vercel Analytics". Clarified the site does not set application cookies.
+- Footer email link: added `min-w-0` to ensure proper `break-words` wrapping at all viewport sizes.
+- All external links verified: Parto in anonimato → Ministero Salute, Culle per la Vita → `/dove-sono/`, SOS Vita → `sosvita.it`, Progetto Gemma → `mpv.org/progettualita`. All use `rel="noopener noreferrer"`.
+- Favicon `index.html` links verified: `.ico`, 32x32 PNG, 16x16 PNG, apple-touch-icon. No duplicate `<link rel="icon">`.
+
+## LEGAL REVIEW NEEDED
+
+The following items require professional legal validation before considering the site definitive:
+
+- **Privacy Policy**: base giuridica (consenso vs. legittimo interesse), tempi di conservazione delle comunicazioni, eventuali trasferimenti dati, designazione di un DPO se applicabile. The public page currently omits these sections rather than publishing unverified claims.
+- **Cookie Policy**: confirm with legal counsel whether the Vercel Web Analytics description is sufficient for GDPR transparency, even though no cookies are used for user identification.
+- **5x1000 and donation**: any public financial data must be verified with the association before publication.
 
 ## Content status
 
@@ -83,14 +89,15 @@ There are no `/admin` routes.
 - Authorized local photographs.
 - Real testimonials and first news/events.
 - Transparency documents.
+- Legal review of Privacy Policy and Cookie Policy.
 
 ## SEO and portability
 
 - `VITE_PUBLIC_SITE_URL` remains the canonical base URL.
 - `public/robots.txt` allows public indexing and points to the current sitemap.
-- `public/sitemap.xml` contains public routes only.
+- `public/sitemap.xml` contains 8 public routes (no `/notizie/:slug` until real news exist).
+- OG image uses the official logo as temporary fallback; a custom 1200x630 social preview is a future improvement.
 - PORTABILITY CHECK: PASS — `npm install` and `npm run build` require no backend configuration.
-- Legal review remains needed for Privacy Policy, Cookie Policy, analytics wording and any future claims about confidentiality or donations.
 
 ## Legacy
 

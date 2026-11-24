@@ -31,7 +31,7 @@ export default function Footer() {
             <ul className="space-y-3 text-sm text-white/80">
               <li className="flex items-start gap-2"><MapPin className="w-4 h-4 mt-0.5 text-mv-teal-light shrink-0" aria-hidden="true" /><span>{siteConfig.locationName}</span></li>
               <li className="flex items-center gap-2"><Phone className="w-4 h-4 text-mv-teal-light shrink-0" aria-hidden="true" /><a href={siteConfig.phone.href} className="hover:text-white transition-colors">{siteConfig.phone.display}</a></li>
-              <li className="flex items-start gap-2"><Mail className="w-4 h-4 mt-0.5 text-mv-teal-light shrink-0" aria-hidden="true" /><a href={`mailto:${siteConfig.email}`} className="hover:text-white transition-colors break-words">{siteConfig.email}</a></li>
+              <li className="flex items-start gap-2 min-w-0"><Mail className="w-4 h-4 mt-0.5 text-mv-teal-light shrink-0" aria-hidden="true" /><a href={`mailto:${siteConfig.email}`} className="hover:text-white transition-colors break-words min-w-0">{siteConfig.email}</a></li>
             </ul>
           </div>
 

@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import { BookOpen, CheckCircle, Heart, Mail, Phone, Users } from 'lucide-react';
 import SectionTitle from '../components/SectionTitle';
 import SEO from '../components/SEO';
